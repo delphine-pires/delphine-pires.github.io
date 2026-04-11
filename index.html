@@ -299,6 +299,54 @@
     footer { padding: 20px; flex-direction: column; gap: 8px; }
   }
 
+  /* TOOLTIPS */
+  .tooltip-wrap {
+    position: relative;
+    display: inline-flex;
+    cursor: default;
+  }
+  .tooltip-wrap::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1918;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    width: max-content;
+    max-width: 220px;
+    white-space: normal;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    transition-delay: 0s;
+    z-index: 200;
+  }
+  .tooltip-wrap::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1918;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    transition-delay: 0s;
+    z-index: 200;
+  }
+  .tooltip-wrap:hover::after,
+  .tooltip-wrap:hover::before {
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
   /* HOME wrapper */
   #home-view { display: block; }
 </style>
@@ -330,12 +378,12 @@
         <a href="#apropos" class="btn-secondary">À propos</a>
       </div>
       <div class="hero-chips">
-        <span class="chip">Power Automate</span>
-        <span class="chip">Claude API</span>
-        <span class="chip">Power BI</span>
-        <span class="chip">GitHub</span>
-        <span class="chip">RAG</span>
-        <span class="chip">Prompt Engineering</span>
+        <span class="chip tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span>
+        <span class="chip tooltip-wrap" data-tooltip="Interface technique pour utiliser l'IA Claude d'Anthropic dans une application">Claude API</span>
+        <span class="chip tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span>
+        <span class="chip tooltip-wrap" data-tooltip="Plateforme de stockage et de versioning de code source">GitHub</span>
+        <span class="chip tooltip-wrap" data-tooltip="Technique IA qui connecte un modèle de langage à des documents internes pour répondre avec précision">RAG</span>
+        <span class="chip tooltip-wrap" data-tooltip="Technique pour rédiger des instructions précises afin d'obtenir les meilleures réponses d'une IA">Prompt Engineering</span>
       </div>
     </div>
   </section>
@@ -351,15 +399,15 @@
         </div>
         <div class="card-body">
           <div class="card-badges">
-            <span class="badge badge-hr">RH</span>
-            <span class="badge badge-tech">Automatisation</span>
+            <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+            <span class="badge badge-tech tooltip-wrap" data-tooltip="Mise en place de workflows qui s'exécutent sans intervention humaine">Automatisation</span>
           </div>
           <div class="card-title">Onboarding automatisé</div>
           <div class="card-desc">Workflow end-to-end pour l'intégration des nouveaux collaborateurs — de J−7 à J+30, sans intervention manuelle.</div>
           <div class="card-footer">
             <div class="card-tools">
-              <span class="tool-chip">Power Automate</span>
-              <span class="tool-chip">SharePoint</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Plateforme Microsoft de partage de fichiers et de collaboration en équipe">SharePoint</span>
             </div>
             <span class="card-arrow">→</span>
           </div>
@@ -372,15 +420,15 @@
         </div>
         <div class="card-body">
           <div class="card-badges">
-            <span class="badge badge-ai">IA</span>
-            <span class="badge badge-hr">RH</span>
+            <span class="badge badge-ai tooltip-wrap" data-tooltip="Intelligence Artificielle : technologie capable d'analyser, comprendre et générer du texte ou des données">IA</span>
+            <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
           </div>
           <div class="card-title">Chatbot RH</div>
           <div class="card-desc">Assistant conversationnel IA pour répondre aux questions RH courantes — ancré dans la documentation interne, disponible 24/7.</div>
           <div class="card-footer">
             <div class="card-tools">
-              <span class="tool-chip">Claude API</span>
-              <span class="tool-chip">RAG</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Interface technique pour utiliser l'IA Claude d'Anthropic dans une application">Claude API</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Technique IA qui connecte un modèle de langage à des documents internes pour répondre avec précision">RAG</span>
             </div>
             <span class="card-arrow">→</span>
           </div>
@@ -393,15 +441,15 @@
         </div>
         <div class="card-body">
           <div class="card-badges">
-            <span class="badge badge-data">Data</span>
-            <span class="badge badge-hr">RH</span>
+            <span class="badge badge-data tooltip-wrap" data-tooltip="Collecte, structuration et analyse de données pour aider à la décision">Data</span>
+            <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
           </div>
           <div class="card-title">Dashboard RH Power BI</div>
           <div class="card-desc">Tableau de bord unifiant 4 sources — effectifs, turn-over, absentéisme, formation — pour piloter avec des données fiables.</div>
           <div class="card-footer">
             <div class="card-tools">
-              <span class="tool-chip">Power BI</span>
-              <span class="tool-chip">DAX</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Langage de calcul utilisé dans Power BI pour créer des indicateurs et formules">DAX</span>
             </div>
             <span class="card-arrow">→</span>
           </div>
@@ -414,16 +462,16 @@
         </div>
         <div class="card-body">
           <div class="card-badges">
-            <span class="badge badge-tech">Développement</span>
-            <span class="badge badge-hr">RH</span>
+            <span class="badge badge-tech tooltip-wrap" data-tooltip="Conception et construction d'un outil ou d'une application de A à Z">Développement</span>
+            <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
           </div>
           <div class="card-title">Application Post-Formation</div>
           <div class="card-desc">Système de gestion et vérification de documents de formation — extraction OCR automatique, workflow de validation, et interface de vérification manuelle pour fiabiliser les dossiers de formation.</div>
           <div class="card-footer">
             <div class="card-tools">
-              <span class="tool-chip">React</span>
-              <span class="tool-chip">NestJS</span>
-              <span class="tool-chip">OCR</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Bibliothèque JavaScript pour construire des interfaces web interactives">React</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Framework pour construire la partie serveur (back-end) d'une application web">NestJS</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Reconnaissance optique de caractères : extrait automatiquement du texte depuis un PDF ou une image">OCR</span>
             </div>
             <span class="card-arrow">→</span>
           </div>
@@ -446,21 +494,21 @@
         <div class="skill-group">
           <h3>Produit &amp; automatisation</h3>
           <div class="skill-tags">
-            <span class="skill-tag highlight">Power Automate</span>
-            <span class="skill-tag highlight">Prompt Engineering</span>
-            <span class="skill-tag highlight">Claude Code</span>
-            <span class="skill-tag">GitHub</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Technique pour rédiger des instructions précises afin d'obtenir les meilleures réponses d'une IA">Prompt Engineering</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Interface technique pour utiliser l'IA Claude d'Anthropic dans une application">Claude Code</span>
+            <span class="skill-tag tooltip-wrap" data-tooltip="Plateforme de stockage et de versioning de code source">GitHub</span>
             <span class="skill-tag">Power Apps</span>
           </div>
         </div>
         <div class="skill-group">
           <h3>Data &amp; pilotage</h3>
           <div class="skill-tags">
-            <span class="skill-tag highlight">Power BI</span>
-            <span class="skill-tag highlight">DAX</span>
-            <span class="skill-tag">Power Query</span>
-            <span class="skill-tag">Foederis</span>
-            <span class="skill-tag">Rise Up</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Langage de calcul utilisé dans Power BI pour créer des indicateurs et formules">DAX</span>
+            <span class="skill-tag tooltip-wrap" data-tooltip="Outil intégré à Power BI pour nettoyer et préparer les données avant analyse">Power Query</span>
+            <span class="skill-tag tooltip-wrap" data-tooltip="Logiciel de gestion RH (SIRH) utilisé pour gérer les données collaborateurs">Foederis</span>
+            <span class="skill-tag tooltip-wrap" data-tooltip="Plateforme de formation en ligne (LMS) pour gérer les parcours d'apprentissage">Rise Up</span>
           </div>
         </div>
         <div class="skill-group">
@@ -500,8 +548,8 @@
     <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
-        <span class="badge badge-hr">RH</span>
-        <span class="badge badge-tech">Automatisation</span>
+        <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+        <span class="badge badge-tech tooltip-wrap" data-tooltip="Mise en place de workflows qui s'exécutent sans intervention humaine">Automatisation</span>
       </div>
       <h1>Onboarding automatisé</h1>
       <p class="detail-subtitle">Conception et déploiement d'un workflow automatisé pour l'intégration des nouveaux collaborateurs — de la signature du contrat au 30e jour, sans action manuelle de l'équipe RH.</p>
@@ -519,12 +567,12 @@
           <div class="tl-item">
             <div class="tl-day">J − 7</div>
             <div class="tl-spine"><div class="tl-dot" style="background:var(--p50);color:var(--p800);">1</div><div class="tl-line"></div></div>
-            <div class="tl-body"><div class="tl-title">Déclenchement automatique</div><div class="tl-desc">Lecture de la date d'entrée dans le SIRH, instanciation du dossier.</div><div class="pills"><span class="pill pill-p">SIRH</span><span class="pill pill-p">Power Automate</span></div></div>
+            <div class="tl-body"><div class="tl-title">Déclenchement automatique</div><div class="tl-desc">Lecture de la date d'entrée dans le SIRH, instanciation du dossier.</div><div class="pills"><span class="pill pill-p">SIRH</span><span class="pill pill-p tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span></div></div>
           </div>
           <div class="tl-item">
             <div class="tl-day">J − 5</div>
             <div class="tl-spine"><div class="tl-dot" style="background:var(--t50);color:var(--t600);">2</div><div class="tl-line"></div></div>
-            <div class="tl-body"><div class="tl-title">Notifications parties prenantes</div><div class="tl-desc">Emails en parallèle : manager, IT, facilities.</div><div class="pills"><span class="pill pill-t">Outlook</span><span class="pill">3 destinataires</span></div></div>
+            <div class="tl-body"><div class="tl-title">Notifications parties prenantes</div><div class="tl-desc">Emails en parallèle : manager, IT, facilities.</div><div class="pills"><span class="pill pill-t tooltip-wrap" data-tooltip="Logiciel de messagerie Microsoft, utilisé ici pour envoyer des emails automatiques">Outlook</span><span class="pill">3 destinataires</span></div></div>
           </div>
           <div class="tl-item">
             <div class="tl-day">J − 2</div>
@@ -534,22 +582,22 @@
           <div class="tl-item">
             <div class="tl-day">J + 1</div>
             <div class="tl-spine"><div class="tl-dot" style="background:#EAF3DE;color:#27500A;">4</div><div class="tl-line"></div></div>
-            <div class="tl-body"><div class="tl-title">Suivi d'intégration</div><div class="tl-desc">Checklist J+1 à J+30, rappels automatiques si étape non validée.</div><div class="pills"><span class="pill">SharePoint Lists</span><span class="pill">Rappels conditionnels</span></div></div>
+            <div class="tl-body"><div class="tl-title">Suivi d'intégration</div><div class="tl-desc">Checklist J+1 à J+30, rappels automatiques si étape non validée.</div><div class="pills"><span class="pill tooltip-wrap" data-tooltip="Outil Microsoft pour créer des listes de suivi collaboratives, comme un tableau de bord partagé">SharePoint Lists</span><span class="pill">Rappels conditionnels</span></div></div>
           </div>
           <div class="tl-item">
             <div class="tl-day">J + 30</div>
             <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">5</div><div class="tl-line"></div></div>
-            <div class="tl-body"><div class="tl-title">Bilan et clôture</div><div class="tl-desc">Questionnaire satisfaction, rapport mensuel RH consolidé.</div><div class="pills"><span class="pill">MS Forms</span><span class="pill">Power BI</span></div></div>
+            <div class="tl-body"><div class="tl-title">Bilan et clôture</div><div class="tl-desc">Questionnaire satisfaction, rapport mensuel RH consolidé.</div><div class="pills"><span class="pill tooltip-wrap" data-tooltip="Outil Microsoft pour créer des formulaires et questionnaires en ligne">MS Forms</span><span class="pill tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span></div></div>
           </div>
         </div>
       </div>
       <div class="panel">
         <div class="panel-title">Stack technique</div>
         <div class="stack-list">
-          <div class="stack-item"><div class="stack-icon">⚡</div><div><div class="stack-name">Power Automate</div><div class="stack-role">Orchestration, déclencheurs, logique conditionnelle</div></div></div>
-          <div class="stack-item"><div class="stack-icon">📧</div><div><div class="stack-name">Outlook / Exchange</div><div class="stack-role">Emails de bienvenue et notifications</div></div></div>
-          <div class="stack-item"><div class="stack-icon">📋</div><div><div class="stack-name">SharePoint Lists</div><div class="stack-role">Suivi des étapes, checklist manager</div></div></div>
-          <div class="stack-item"><div class="stack-icon">📊</div><div><div class="stack-name">MS Forms + Power BI</div><div class="stack-role">Questionnaire J+30, rapport mensuel</div></div></div>
+          <div class="stack-item"><div class="stack-icon">⚡</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span></div><div class="stack-role">Orchestration, déclencheurs, logique conditionnelle</div></div></div>
+          <div class="stack-item"><div class="stack-icon">📧</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Logiciel de messagerie Microsoft, utilisé ici pour envoyer des emails automatiques">Outlook / Exchange</span></div><div class="stack-role">Emails de bienvenue et notifications</div></div></div>
+          <div class="stack-item"><div class="stack-icon">📋</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Outil Microsoft pour créer des listes de suivi collaboratives, comme un tableau de bord partagé">SharePoint Lists</span></div><div class="stack-role">Suivi des étapes, checklist manager</div></div></div>
+          <div class="stack-item"><div class="stack-icon">📊</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Outil Microsoft pour créer des formulaires et questionnaires en ligne">MS Forms</span> + <span class="tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span></div><div class="stack-role">Questionnaire J+30, rapport mensuel</div></div></div>
         </div>
       </div>
     </div>
@@ -578,9 +626,9 @@
     <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
-        <span class="badge badge-ai">IA</span>
-        <span class="badge badge-hr">RH</span>
-        <span class="badge badge-tech">Expérience collaborateur</span>
+        <span class="badge badge-ai tooltip-wrap" data-tooltip="Intelligence Artificielle : technologie capable d'analyser, comprendre et générer du texte ou des données">IA</span>
+        <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+        <span class="badge badge-tech tooltip-wrap" data-tooltip="Qualité du parcours vécu par un salarié dans son entreprise au quotidien">Expérience collaborateur</span>
       </div>
       <h1>Chatbot RH</h1>
       <p class="detail-subtitle">Assistant conversationnel IA pour répondre aux questions RH courantes — disponible 24/7, ancré dans la documentation interne, avec escalade vers un RH humain si nécessaire.</p>
@@ -618,9 +666,9 @@
         <div class="panel-title">Pipeline technique</div>
         <div class="stack-list">
           <div class="stack-item"><div class="stack-icon">1</div><div><div class="stack-name">Réception &amp; identification</div><div class="stack-role">Teams / intranet · SSO entreprise</div></div></div>
-          <div class="stack-item"><div class="stack-icon">2</div><div><div class="stack-name">Recherche RAG</div><div class="stack-role">Embeddings sur docs RH internes</div></div></div>
-          <div class="stack-item"><div class="stack-icon">3</div><div><div class="stack-name">Génération — Claude API</div><div class="stack-role">Réponse ancrée, prompt système RH</div></div></div>
-          <div class="stack-item"><div class="stack-icon">4</div><div><div class="stack-name">Escalade &amp; logs</div><div class="stack-role">Routing conditionnel · Power BI hebdo</div></div></div>
+          <div class="stack-item"><div class="stack-icon">2</div><div><div class="stack-name">Recherche <span class="tooltip-wrap" data-tooltip="Technique IA qui connecte un modèle de langage à des documents internes pour répondre avec précision">RAG</span></div><div class="stack-role">Embeddings sur docs RH internes</div></div></div>
+          <div class="stack-item"><div class="stack-icon">3</div><div><div class="stack-name">Génération — <span class="tooltip-wrap" data-tooltip="Interface technique pour utiliser l'IA Claude d'Anthropic dans une application">Claude API</span></div><div class="stack-role">Réponse ancrée, prompt système RH</div></div></div>
+          <div class="stack-item"><div class="stack-icon">4</div><div><div class="stack-name">Escalade &amp; logs</div><div class="stack-role">Routing conditionnel · <span class="tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span> hebdo</div></div></div>
         </div>
       </div>
       <div class="panel">
@@ -637,7 +685,7 @@
       <div class="panel-title">Contexte &amp; problème résolu</div>
       <div class="context-block">
         <p>L'équipe RH consacrait une part importante de son temps à des <strong>questions répétitives à faible valeur ajoutée</strong> — soldes de congés, procédures d'arrêt, dates d'entretiens. Ces demandes attendaient 24 à 48 h une réponse par email. L'enjeu : <strong>améliorer l'expérience collaborateur</strong> tout en recentrant les RRH sur les sujets complexes.</p>
-        <div class="context-chips"><span class="context-chip">RAG sur docs internes</span><span class="context-chip">Intégré à Microsoft Teams</span><span class="context-chip">Données sur tenant sécurisé</span></div>
+        <div class="context-chips"><span class="context-chip tooltip-wrap" data-tooltip="Technique IA qui connecte un modèle de langage à des documents internes pour répondre avec précision">RAG sur docs internes</span><span class="context-chip">Intégré à Microsoft Teams</span><span class="context-chip">Données sur tenant sécurisé</span></div>
       </div>
     </div>
     <div class="panel">
@@ -658,9 +706,9 @@
     <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
-        <span class="badge badge-data">Data</span>
-        <span class="badge badge-hr">RH</span>
-        <span class="badge" style="background:#FAECE7;color:#712B13;">Power BI</span>
+        <span class="badge badge-data tooltip-wrap" data-tooltip="Collecte, structuration et analyse de données pour aider à la décision">Data</span>
+        <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+        <span class="badge tooltip-wrap" style="background:#FAECE7;color:#712B13;" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span>
       </div>
       <h1>Dashboard RH Power BI</h1>
       <p class="detail-subtitle">Tableau de bord de pilotage RH unifiant quatre sources de données — effectifs, turn-over, absentéisme, formation — pour décider sur des données fiables et actualisées.</p>
@@ -736,8 +784,8 @@
       <div class="panel">
         <div class="panel-title">Sources connectées</div>
         <div class="sources-grid">
-          <div class="src-item"><div class="src-name">SIRH — Foederis</div><div class="src-desc">Effectifs, contrats, mouvements</div><span class="src-badge freq-h">Hebdomadaire</span></div>
-          <div class="src-item"><div class="src-name">LMS — Rise Up</div><div class="src-desc">Completions, temps formation</div><span class="src-badge freq-h">Hebdomadaire</span></div>
+          <div class="src-item"><div class="src-name">SIRH — <span class="tooltip-wrap" data-tooltip="Logiciel de gestion RH (SIRH) utilisé pour gérer les données collaborateurs">Foederis</span></div><div class="src-desc">Effectifs, contrats, mouvements</div><span class="src-badge freq-h">Hebdomadaire</span></div>
+          <div class="src-item"><div class="src-name">LMS — <span class="tooltip-wrap" data-tooltip="Plateforme de formation en ligne (LMS) pour gérer les parcours d'apprentissage">Rise Up</span></div><div class="src-desc">Completions, temps formation</div><span class="src-badge freq-h">Hebdomadaire</span></div>
           <div class="src-item"><div class="src-name">Paie</div><div class="src-desc">Masse salariale, coûts</div><span class="src-badge freq-m">Mensuel</span></div>
           <div class="src-item"><div class="src-name">ATS Recrutement</div><div class="src-desc">Candidatures, délais</div><span class="src-badge freq-h">Hebdomadaire</span></div>
         </div>
@@ -749,8 +797,8 @@
         <div class="panel-title">Modèle de données</div>
         <div class="mini-list">
           <div class="mini-item"><div class="mini-head">Schéma en étoile</div><div class="mini-desc">Table de faits centrale + dimensions temps, collaborateur, service.</div></div>
-          <div class="mini-item"><div class="mini-head">DAX</div><div class="mini-desc">Turn-over, absentéisme, cumuls glissants 12 mois.</div></div>
-          <div class="mini-item"><div class="mini-head">Power Query (ETL)</div><div class="mini-desc">Nettoyage et jointure des 4 sources.</div></div>
+          <div class="mini-item"><div class="mini-head"><span class="tooltip-wrap" data-tooltip="Langage de calcul utilisé dans Power BI pour créer des indicateurs et formules">DAX</span></div><div class="mini-desc">Turn-over, absentéisme, cumuls glissants 12 mois.</div></div>
+          <div class="mini-item"><div class="mini-head"><span class="tooltip-wrap" data-tooltip="Outil intégré à Power BI pour nettoyer et préparer les données avant analyse">Power Query</span> (ETL)</div><div class="mini-desc">Nettoyage et jointure des 4 sources.</div></div>
         </div>
       </div>
       <div class="panel">
@@ -758,14 +806,14 @@
         <div class="mini-list">
           <div class="mini-item"><div class="mini-head">Row-Level Security</div><div class="mini-desc">Chaque manager voit uniquement son périmètre.</div></div>
           <div class="mini-item"><div class="mini-head">Anonymisation</div><div class="mini-desc">Agrégations à partir de 5 personnes minimum.</div></div>
-          <div class="mini-item"><div class="mini-head">Accès par rôle</div><div class="mini-desc">Groupes Azure AD existants.</div></div>
+          <div class="mini-item"><div class="mini-head">Accès par rôle</div><div class="mini-desc">Groupes <span class="tooltip-wrap" data-tooltip="Service Microsoft de gestion des identités et des accès en entreprise">Azure AD</span> existants.</div></div>
         </div>
       </div>
       <div class="panel">
         <div class="panel-title">Diffusion</div>
         <div class="mini-list">
-          <div class="mini-item"><div class="mini-head">Power BI Service</div><div class="mini-desc">Accessible navigateur et Teams, sans installation.</div></div>
-          <div class="mini-item"><div class="mini-head">Export PDF auto</div><div class="mini-desc">Rapport mensuel via Power Automate.</div></div>
+          <div class="mini-item"><div class="mini-head"><span class="tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span> Service</div><div class="mini-desc">Accessible navigateur et Teams, sans installation.</div></div>
+          <div class="mini-item"><div class="mini-head">Export PDF auto</div><div class="mini-desc">Rapport mensuel via <span class="tooltip-wrap" data-tooltip="Outil Microsoft pour automatiser des tâches répétitives sans coder">Power Automate</span>.</div></div>
           <div class="mini-item"><div class="mini-head">Alertes seuils</div><div class="mini-desc">Notif Teams si turn-over &gt; 10 %.</div></div>
         </div>
       </div>
@@ -795,9 +843,9 @@
     <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
-        <span class="badge badge-tech">Développement produit</span>
-        <span class="badge badge-hr">RH</span>
-        <span class="badge badge-ai">IA / OCR</span>
+        <span class="badge badge-tech tooltip-wrap" data-tooltip="Conception et construction d'un outil ou d'une application de A à Z">Développement produit</span>
+        <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+        <span class="badge badge-ai tooltip-wrap" data-tooltip="Reconnaissance optique de caractères : extrait automatiquement du texte depuis un PDF ou une image">IA / OCR</span>
       </div>
       <h1>Application Post-Formation</h1>
       <p class="detail-subtitle">Conception et développement d'une application web full-stack pour automatiser la réception, l'analyse OCR et la validation des attestations de formation — de l'upload PDF au dossier archivé.</p>
@@ -836,7 +884,7 @@
             <div class="tl-body">
               <div class="tl-title">Extraction OCR</div>
               <div class="tl-desc">Analyse Tesseract.js sur 8 champs : type de document, formation, nom/prénom, dates, durée, validité, signature/tampon.</div>
-              <div class="pills"><span class="pill">Tesseract.js</span><span class="pill">Sharp</span><span class="pill">8 champs</span></div>
+              <div class="pills"><span class="pill tooltip-wrap" data-tooltip="Moteur OCR open source : analyse une image ou un PDF pour en extraire le texte">Tesseract.js</span><span class="pill tooltip-wrap" data-tooltip="Bibliothèque de traitement d'image : redimensionne et prépare les fichiers avant l'OCR">Sharp</span><span class="pill">8 champs</span></div>
             </div>
           </div>
           <div class="tl-item">
@@ -871,12 +919,12 @@
       <div class="panel">
         <div class="panel-title">Stack technique</div>
         <div class="stack-list">
-          <div class="stack-item"><div class="stack-icon">⚛</div><div><div class="stack-name">React 18 + TypeScript</div><div class="stack-role">Interface utilisateur</div></div></div>
-          <div class="stack-item"><div class="stack-icon">🔧</div><div><div class="stack-name">NestJS + TypeScript</div><div class="stack-role">API backend</div></div></div>
-          <div class="stack-item"><div class="stack-icon">🗄</div><div><div class="stack-name">PostgreSQL + Prisma</div><div class="stack-role">Base de données</div></div></div>
-          <div class="stack-item"><div class="stack-icon">🔐</div><div><div class="stack-name">SSO entreprise (OAuth2)</div><div class="stack-role">Authentification</div></div></div>
-          <div class="stack-item"><div class="stack-icon">🔍</div><div><div class="stack-name">Tesseract.js + Sharp</div><div class="stack-role">Moteur OCR</div></div></div>
-          <div class="stack-item"><div class="stack-icon">🐳</div><div><div class="stack-name">Docker Compose</div><div class="stack-role">Conteneurisation</div></div></div>
+          <div class="stack-item"><div class="stack-icon">⚛</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Bibliothèque JavaScript pour construire des interfaces web interactives">React</span> 18 + TypeScript</div><div class="stack-role">Interface utilisateur</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔧</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Framework pour construire la partie serveur (back-end) d'une application web">NestJS</span> + TypeScript</div><div class="stack-role">API backend</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🗄</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Base de données relationnelle pour stocker et interroger des données structurées">PostgreSQL</span> + <span class="tooltip-wrap" data-tooltip="Outil qui facilite les échanges entre le code et la base de données">Prisma</span></div><div class="stack-role">Base de données</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔐</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Système de connexion unique : l'utilisateur se connecte avec son compte entreprise">SSO entreprise (OAuth2)</span></div><div class="stack-role">Authentification</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔍</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Moteur OCR open source : analyse une image ou un PDF pour en extraire le texte">Tesseract.js</span> + <span class="tooltip-wrap" data-tooltip="Bibliothèque de traitement d'image : redimensionne et prépare les fichiers avant l'OCR">Sharp</span></div><div class="stack-role">Moteur OCR</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🐳</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Outil pour lancer plusieurs composants d'une application en même temps, de façon isolée">Docker Compose</span></div><div class="stack-role">Conteneurisation</div></div></div>
         </div>
       </div>
     </div>
