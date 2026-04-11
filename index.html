@@ -119,6 +119,7 @@
   .card-visual.purple { background: linear-gradient(135deg, var(--p50) 0%, #e0deff 100%); }
   .card-visual.teal   { background: linear-gradient(135deg, var(--t50) 0%, #c8f5e5 100%); }
   .card-visual.amber  { background: linear-gradient(135deg, var(--a50) 0%, #fde4a0 100%); }
+  .card-visual.coral  { background: linear-gradient(135deg, #FAECE7 0%, #fdd5c0 100%); }
   .card-visual-icon {
     width: 56px; height: 56px; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
@@ -127,6 +128,7 @@
   .icon-purple { background: var(--p100); }
   .icon-teal   { background: var(--t50); border: 1px solid rgba(29,158,117,.2); }
   .icon-amber  { background: var(--a50); border: 1px solid rgba(239,159,39,.2); }
+  .icon-coral  { background: #FAECE7; border: 1px solid rgba(220,100,60,.2); }
   .card-body { padding: 20px 22px 22px; }
   .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
   .badge {
@@ -340,7 +342,7 @@
 
   <section id="projets">
     <div class="section-eyebrow">Réalisations</div>
-    <div class="section-title">Trois projets, une conviction</div>
+    <div class="section-title">Quatre projets, une conviction</div>
     <div class="projects-grid">
 
       <a class="project-card" href="#" onclick="showDetail('onboarding');return false;">
@@ -400,6 +402,28 @@
             <div class="card-tools">
               <span class="tool-chip">Power BI</span>
               <span class="tool-chip">DAX</span>
+            </div>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="project-card" href="#" onclick="showDetail('postformation');return false;">
+        <div class="card-visual coral">
+          <div class="card-visual-icon icon-coral">📄</div>
+        </div>
+        <div class="card-body">
+          <div class="card-badges">
+            <span class="badge badge-tech">Développement</span>
+            <span class="badge badge-hr">RH</span>
+          </div>
+          <div class="card-title">Application Post-Formation</div>
+          <div class="card-desc">Système de gestion et vérification de documents de formation — extraction OCR automatique, workflow de validation, et interface de vérification manuelle pour fiabiliser les dossiers de formation.</div>
+          <div class="card-footer">
+            <div class="card-tools">
+              <span class="tool-chip">React</span>
+              <span class="tool-chip">NestJS</span>
+              <span class="tool-chip">OCR</span>
             </div>
             <span class="card-arrow">→</span>
           </div>
@@ -760,6 +784,122 @@
         <div class="learning-item"><span class="learning-arrow">→</span><span>Le plus long n'est pas de construire les visuels — c'est de s'accorder sur les définitions métier : qu'est-ce qu'un "départ volontaire" ? Ces questions révèlent des désaccords qui existaient depuis des années.</span></div>
         <div class="learning-item"><span class="learning-arrow">→</span><span>La Row-Level Security est souvent négligée sur les dashboards RH — la mettre en place dès le départ évite des problèmes de confidentialité difficiles à corriger après déploiement.</span></div>
         <div class="learning-item"><span class="learning-arrow">→</span><span>Un dashboard peu utilisé est un dashboard trop complexe. L'itération sur la page d'accueil synthétique a été déterminante pour l'adoption.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DETAIL : POST-FORMATION ═══════════════ -->
+<div id="detail-postformation" class="detail-page">
+  <div style="max-width:900px;margin:0 auto;">
+    <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
+    <div class="detail-header">
+      <div class="card-badges">
+        <span class="badge badge-tech">Développement produit</span>
+        <span class="badge badge-hr">RH</span>
+        <span class="badge badge-ai">IA / OCR</span>
+      </div>
+      <h1>Application Post-Formation</h1>
+      <p class="detail-subtitle">Conception et développement d'une application web full-stack pour automatiser la réception, l'analyse OCR et la validation des attestations de formation — de l'upload PDF au dossier archivé.</p>
+    </div>
+    <img src="Application Post Formation.jpeg" alt="Interface de l'application Post-Formation" style="width:100%; border-radius:var(--radius); border:1px solid var(--border); margin-bottom:24px;">
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-val">8</div><div class="kpi-label">Champs extraits automatiquement par document (OCR)</div></div>
+      <div class="kpi"><div class="kpi-val">0 doublon</div><div class="kpi-label">Détection automatique par hash MD5</div></div>
+      <div class="kpi"><div class="kpi-val">5 statuts</div><div class="kpi-label">Workflow complet de bout en bout</div></div>
+      <div class="kpi"><div class="kpi-val">Full-stack</div><div class="kpi-label">React + NestJS + PostgreSQL</div></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-title">Mon rôle — Product Builder</div>
+      <div class="context-block">
+        <p>J'ai conçu le produit de A à Z : définition du besoin terrain, architecture fonctionnelle, spécifications des écrans, pilotage du développement avec assistance IA (Claude Code), et recette avec les utilisateurs finaux.</p>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="panel">
+        <div class="panel-title">Fonctionnalités clés</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-day">Étape 1</div>
+            <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">1</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">Upload &amp; détection</div>
+              <div class="tl-desc">Dépôt de PDFs par glisser-déposer, détection automatique des doublons (hash MD5), lancement de l'analyse OCR.</div>
+              <div class="pills"><span class="pill">Drag &amp; drop</span><span class="pill">Hash MD5</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-day">Étape 2</div>
+            <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">2</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">Extraction OCR</div>
+              <div class="tl-desc">Analyse Tesseract.js sur 8 champs : type de document, formation, nom/prénom, dates, durée, validité, signature/tampon.</div>
+              <div class="pills"><span class="pill">Tesseract.js</span><span class="pill">Sharp</span><span class="pill">8 champs</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-day">Étape 3</div>
+            <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">3</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">Interface de vérification</div>
+              <div class="tl-desc">Vue split PDF + formulaire, surlignage des champs extraits, correction manuelle par sélection de texte sur le PDF.</div>
+              <div class="pills"><span class="pill">Vue split</span><span class="pill">Correction manuelle</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-day">Étape 4</div>
+            <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">4</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">Workflow de validation</div>
+              <div class="tl-desc">5 statuts (En attente → Analyse → À vérifier → Validé → Archivé), commentaires threadés avec réactions.</div>
+              <div class="pills"><span class="pill">5 statuts</span><span class="pill">Commentaires threadés</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-day">Étape 5</div>
+            <div class="tl-spine"><div class="tl-dot" style="background:#FAECE7;color:#712B13;">5</div><div class="tl-line"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">Statistiques OCR</div>
+              <div class="tl-desc">Dashboard analytique : taux de succès par champ, filtres par date, export Excel.</div>
+              <div class="pills"><span class="pill">Dashboard analytique</span><span class="pill">Export Excel</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Stack technique</div>
+        <div class="stack-list">
+          <div class="stack-item"><div class="stack-icon">⚛</div><div><div class="stack-name">React 18 + TypeScript</div><div class="stack-role">Interface utilisateur</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔧</div><div><div class="stack-name">NestJS + TypeScript</div><div class="stack-role">API backend</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🗄</div><div><div class="stack-name">PostgreSQL + Prisma</div><div class="stack-role">Base de données</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔐</div><div><div class="stack-name">SSO entreprise (OAuth2)</div><div class="stack-role">Authentification</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🔍</div><div><div class="stack-name">Tesseract.js + Sharp</div><div class="stack-role">Moteur OCR</div></div></div>
+          <div class="stack-item"><div class="stack-icon">🐳</div><div><div class="stack-name">Docker Compose</div><div class="stack-role">Conteneurisation</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-title">Contexte &amp; problème résolu</div>
+      <div class="context-block">
+        <p>La gestion des attestations de formation reposait sur des <strong>échanges email manuels et des dossiers partagés non structurés</strong> — documents mal nommés, doublons fréquents, validations oubliées. L'enjeu était de construire un <strong>outil métier sur mesure</strong>, capable d'automatiser l'extraction des données clés tout en conservant une validation humaine pour les cas ambigus.</p>
+        <div class="context-chips">
+          <span class="context-chip">Développement AI-assisted (Claude Code)</span>
+          <span class="context-chip">Architecture full-stack from scratch</span>
+          <span class="context-chip">Workflow métier RH sur mesure</span>
+          <span class="context-chip">OCR + validation hybride</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Ce que j'ai appris</div>
+      <div class="learning-list">
+        <div class="learning-item"><span class="learning-arrow">→</span><span>Concevoir un produit de bout en bout oblige à arbitrer en permanence entre ce que la technologie peut faire et ce que l'utilisateur comprend réellement — l'OCR à 80 % de précision est inutile si l'interface de correction est trop complexe.</span></div>
+        <div class="learning-item"><span class="learning-arrow">→</span><span>Le développement assisté par IA (Claude Code) m'a permis de livrer une application full-stack sans être développeuse de formation — mais cela exige une rigueur de spécification plus grande, pas moins.</span></div>
+        <div class="learning-item"><span class="learning-arrow">→</span><span>La gestion du workflow (statuts, transitions, cas d'erreur) est la partie la plus sous-estimée d'un projet produit : c'est là que se cache 80 % de la complexité métier.</span></div>
       </div>
     </div>
   </div>
