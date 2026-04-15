@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard RH — Outil de pilotage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --p50:#EEEDFE;--p100:#CECBF6;--p200:#AFA9EC;--p400:#7F77DD;--p600:#534AB7;--p800:#3C3489;--p900:#26215C;
+  --t50:#E1F5EE;--t100:#9FE1CB;--t400:#1D9E75;--t600:#0F6E56;
+  --a50:#FAEEDA;--a400:#EF9F27;--a600:#854F0B;
+  --r50:#FCEBEB;--r400:#E24B4A;--r600:#A32D2D;
+  --g50:#F1EFE8;--g100:#D3D1C7;--g200:#B4B2A9;--g400:#888780;--g800:#444441;
+  --ink:#1a1918;--ink2:#4a4946;--ink3:#888780;
+  --bg:#faf9f7;--card:#ffffff;--border:rgba(26,25,24,.1);
+  --radius:14px;--radius-sm:8px;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;background:rgba(250,249,247,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.nav-brand{font-family:var(--serif);font-size:16px;color:var(--ink);text-decoration:none;}
+.nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s;}
+.nav-back:hover{color:var(--ink);}
+.hero{padding:44px 40px 28px;max-width:1100px;margin:0 auto;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--a600);background:var(--a50);border:1px solid rgba(239,159,39,.25);padding:5px 12px;border-radius:20px;margin-bottom:16px;}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a400);}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,4vw,44px);line-height:1.1;color:var(--ink);margin-bottom:8px;}
+.hero h1 em{font-style:italic;color:var(--a600);}
+.hero-desc{font-size:14px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:540px;}
+.main{max-width:1100px;margin:0 auto;padding:0 40px 80px;display:flex;flex-direction:column;gap:16px;}
+.filters-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);}
+.filter-label{font-size:12px;font-weight:500;color:var(--ink3);}
+select.filter-select{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;outline:none;cursor:pointer;transition:border-color .2s;}
+select.filter-select:focus{border-color:var(--p400);}
+.filter-sep{width:1px;height:20px;background:var(--border);}
+.source-badge{font-size:11px;color:var(--ink3);background:var(--g50);padding:3px 10px;border-radius:20px;margin-left:auto;}
+.kpis-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.kpi{border-radius:var(--radius-sm);padding:14px 16px;}
+.kpi.p{background:var(--p50);}
+.kpi.t{background:var(--t50);}
+.kpi.a{background:var(--a50);}
+.kpi.r{background:var(--r50);}
+.kpi-val{font-family:var(--serif);font-size:26px;line-height:1;margin-bottom:3px;}
+.kpi.p .kpi-val{color:var(--p800);}
+.kpi.t .kpi-val{color:var(--t600);}
+.kpi.a .kpi-val{color:var(--a600);}
+.kpi.r .kpi-val{color:var(--r600);}
+.kpi-label{font-size:11px;line-height:1.4;}
+.kpi.p .kpi-label{color:var(--p600);}
+.kpi.t .kpi-label{color:var(--t600);}
+.kpi.a .kpi-label{color:var(--a600);}
+.kpi.r .kpi-label{color:var(--r600);}
+.kpi-delta{font-size:11px;margin-top:4px;}
+.delta-pos{color:var(--t600);}
+.delta-neg{color:var(--r600);}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--ink3);background:none;border:none;padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--p600);font-weight:500;border-bottom-color:var(--p400);}
+.tab-content{display:none;}
+.tab-content.active{display:flex;flex-direction:column;gap:16px;padding-top:16px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;}
+.card-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.chart-h240{position:relative;height:240px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:10px 10px;border-bottom:1px solid var(--border);color:var(--ink2);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--g50);}
+.bar-list{display:flex;flex-direction:column;gap:8px;}
+.bar-row{display:flex;align-items:center;gap:10px;}
+.bar-lbl{font-size:12px;color:var(--ink2);width:110px;flex-shrink:0;text-align:right;}
+.bar-track{flex:1;height:10px;background:var(--g50);border-radius:5px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s ease;}
+.bar-val{font-size:12px;color:var(--ink);width:32px;text-align:right;flex-shrink:0;}
+.sparks-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.spark-card{background:var(--g50);border-radius:var(--radius-sm);padding:12px 14px;}
+.spark-title{font-size:11px;font-weight:500;color:var(--ink3);margin-bottom:8px;}
+.spark-val{font-size:18px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.periode-note{font-size:11px;color:var(--ink3);font-style:italic;padding:8px 14px;background:var(--g50);border-radius:var(--radius-sm);}
+@media(max-width:700px){
+  nav,div.hero,.main{padding-left:20px;padding-right:20px;}
+  .kpis-row{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .sparks-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">Delphine</a>
+  <a href="index.html" class="nav-back">← Retour au portfolio</a>
+</nav>
+<div class="hero">
+  <div class="hero-tag">Outil RH interactif</div>
+  <h1>Dashboard RH —<br><em>Pilotage</em> en temps réel</h1>
+  <p class="hero-desc">Tableau de bord interactif — données <span id="annee-label"></span> jusqu'au <span id="today-label"></span>. Filtres par service et période, graphiques dynamiques.</p>
+</div>
+<div class="main">
+  <div class="filters-bar">
+    <span class="filter-label">Service</span>
+    <select class="filter-select" id="f-service" onchange="applyFilters()">
+      <option value="tous">Tous les services</option>
+      <option value="Commercial">Commercial</option>
+      <option value="IT">IT</option>
+      <option value="Production">Production</option>
+      <option value="RH">RH / Juridique</option>
+      <option value="Finance">Finance</option>
+      <option value="Direction">Direction</option>
+    </select>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Période</span>
+    <select class="filter-select" id="f-periode" onchange="applyFilters()"></select>
+    <span class="source-badge">Données fictives · Foederis · Rise Up · Paie · ATS</span>
+  </div>
+  <div class="periode-note" id="periode-note"></div>
+  <div class="kpis-row" id="kpis-row"></div>
+  <div class="card" style="padding:20px 22px 0;">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('effectifs',this)">👥 Effectifs</button>
+      <button class="tab-btn" onclick="showTab('turnover',this)">📉 Turn-over</button>
+      <button class="tab-btn" onclick="showTab('absenteisme',this)">🏥 Absentéisme</button>
+      <button class="tab-btn" onclick="showTab('formation',this)">🎓 Formation</button>
+    </div>
+    <div id="tab-effectifs" class="tab-content active">
+      <div class="two-col">
+        <div><div class="card-title">Effectifs par département</div><div class="bar-list" id="bars-services"></div></div>
+        <div><div class="card-title">Répartition par type de contrat</div><div class="chart-h240"><canvas id="chart-contrats"></canvas></div></div>
+      </div>
+      <div class="two-col">
+        <div><div class="card-title">Pyramide des âges</div><div class="chart-h240"><canvas id="chart-ages"></canvas></div></div>
+        <div><div class="card-title">Répartition H/F par service</div><div class="chart-h240"><canvas id="chart-hf"></canvas></div></div>
+      </div>
+    </div>
+    <div id="tab-turnover" class="tab-content">
+      <div class="sparks-row" id="sparks-turnover"></div>
+      <div class="two-col">
+        <div><div class="card-title" id="to-evol-title"></div><div class="chart-h240"><canvas id="chart-to-evolution"></canvas></div></div>
+        <div><div class="card-title">Motifs de départ</div><div class="chart-h240"><canvas id="chart-motifs"></canvas></div></div>
+      </div>
+      <div><div class="card-title" id="mvt-title"></div><table id="table-mouvements"></table></div>
+    </div>
+    <div id="tab-absenteisme" class="tab-content">
+      <div class="sparks-row" id="sparks-abs"></div>
+      <div class="two-col">
+        <div><div class="card-title" id="abs-evol-title"></div><div class="chart-h240"><canvas id="chart-abs-evolution"></canvas></div></div>
+        <div><div class="card-title">Types d'absence</div><div class="chart-h240"><canvas id="chart-abs-types"></canvas></div></div>
+      </div>
+      <div><div class="card-title">Absentéisme par service</div><div class="bar-list" id="bars-abs"></div></div>
+    </div>
+    <div id="tab-formation" class="tab-content">
+      <div class="sparks-row" id="sparks-form"></div>
+      <div class="two-col">
+        <div><div class="card-title">Taux de formation par service</div><div class="chart-h240"><canvas id="chart-form-services"></canvas></div></div>
+        <div><div class="card-title">Répartition du budget formation</div><div class="chart-h240"><canvas id="chart-form-budget"></canvas></div></div>
+      </div>
+      <div><div class="card-title" id="form-plan-title"></div><div class="bar-list" id="bars-form"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATE DYNAMIQUE ───────────────────────────────────────────────────
+// Tout est calculé à partir de la vraie date du jour.
+const TODAY       = new Date();
+const ANNEE       = TODAY.getFullYear();
+const MOIS_EN_COURS = TODAY.getMonth(); // 0-indexé (jan=0, avr=3...)
+const NB_MOIS_YTD = MOIS_EN_COURS + 1; // nombre de mois écoulés depuis jan
+const RATIO_YTD   = NB_MOIS_YTD / 12;  // progression dans l'année (ex: avr = 4/12)
+
+const MOIS_LABELS = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+const MOIS_NOMS   = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const SERVICES    = ['Commercial','IT','Production','RH','Finance','Direction'];
+
+// Affichage de la date dans le hero
+document.getElementById('today-label').textContent = TODAY.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+document.getElementById('annee-label').textContent = ANNEE;
+
+// ─── DONNÉES ANNUELLES DE RÉFÉRENCE (base 12 mois) ────────────────────
+// Ces chiffres représentent une année pleine.
+// Toutes les valeurs YTD sont calculées dynamiquement via RATIO_YTD.
+const REF = {
+  effectifJan: 345,
+  effectifDec: 362,
+  cdi: 213, cdd: 96, alternance: 38, interim: 15,
+  services: {Commercial:103, IT:63, Production:81, 'RH':34, Finance:58, Direction:21},
+  ages: {'18-25':32,'26-35':94,'36-45':116,'46-55':81,'56+':37},
+  hf: {
+    Commercial:{h:55,f:48}, IT:{h:47,f:16}, Production:{h:61,f:20},
+    'RH':{h:9,f:25}, Finance:{h:30,f:28}, Direction:{h:13,f:8}
+  },
+  // Turn-over : données mensuelles sur 12 mois (jan→déc)
+  to12mois: [7.6,7.9,7.4,7.8,8.1,8.3,8.0,7.7,7.5,7.8,8.2,8.0],
+  entreesMois: [4,3,5,6,4,3,2,4,5,3,4,3],  // entrées par mois
+  sortiesMois: [2,2,3,2,3,2,1,3,2,2,3,2],   // sorties par mois
+  motifs: {Démission:14,'Fin de CDD':9,'Rupture conventionnelle':5,'Retraite':3},
+  // Mouvements — un par mois (les plus récents en premier)
+  tousMovements: [
+    {moisIdx:3, nom:'Laurent M.',  service:'IT',         type:'Entrée', detail:'CDI'},
+    {moisIdx:3, nom:'Roux P.',     service:'Commercial', type:'Sortie', detail:'Démission'},
+    {moisIdx:2, nom:'Simon A.',    service:'RH',         type:'Entrée', detail:'CDD'},
+    {moisIdx:2, nom:'Faure J.',    service:'Production', type:'Entrée', detail:'CDI'},
+    {moisIdx:1, nom:'Blanc C.',    service:'Finance',    type:'Entrée', detail:'Alternance'},
+    {moisIdx:1, nom:'Morel T.',    service:'Commercial', type:'Sortie', detail:'Démission'},
+    {moisIdx:0, nom:'Girard S.',   service:'IT',         type:'Entrée', detail:'CDI'},
+    {moisIdx:0, nom:'Henry L.',    service:'Production', type:'Sortie', detail:'Fin de CDD'},
+    {moisIdx:4, nom:'Petit E.',    service:'RH',         type:'Entrée', detail:'CDI'},
+    {moisIdx:5, nom:'Dupuis N.',   service:'Finance',    type:'Sortie', detail:'Retraite'},
+    {moisIdx:6, nom:'Martin C.',   service:'Commercial', type:'Entrée', detail:'CDI'},
+    {moisIdx:7, nom:'Bernard L.',  service:'IT',         type:'Entrée', detail:'Alternance'},
+    {moisIdx:8, nom:'Thomas A.',   service:'Production', type:'Sortie', detail:'Démission'},
+    {moisIdx:9, nom:'Leroy P.',    service:'RH',         type:'Entrée', detail:'CDD'},
+    {moisIdx:10,nom:'Moreau S.',   service:'Finance',    type:'Entrée', detail:'CDI'},
+    {moisIdx:11,nom:'Girard M.',   service:'Commercial', type:'Sortie', detail:'Fin de CDD'},
+  ],
+  // Absentéisme mensuel (jours totaux)
+  abs12mois: [148,132,121,138,125,142,110,118,135,144,128,139],
+  absTauxAnnuel: 4.1,
+  absJoursAnnuel: 14.0,
+  absCoutAnnuel: 178000,
+  absTypes: {'Maladie ordinaire':57,'AT/MP':12,'Maternité/Paternité':19,'Autre':12},
+  absServices: {Commercial:3.7, IT:4.0, Production:5.1, 'RH':2.8, Finance:3.5, Direction:2.0},
+  // Formation annuelle
+  formTauxAnnuel: 76,
+  formHeuresAnnuel: 22.4,
+  formBudgetAnnuel: 124000,
+  formServices: {Commercial:68, IT:88, Production:72, 'RH':92, Finance:74, Direction:60},
+  formBudgetRep: {'Formations réglementaires':38,'Développement compétences':32,'Management':18,'Digital/IA':12},
+  formPlanAnnuel: [
+    {theme:'Sécurité & habilitations', objectif:100},
+    {theme:'Outils digitaux',          objectif:80},
+    {theme:'Management',               objectif:60},
+    {theme:'Langues',                  objectif:40},
+    {theme:'IA & automatisation',      objectif:30},
+  ],
+};
+
+// ─── CALCUL DYNAMIQUE DES VALEURS YTD ────────────────────────────────
+function ytd(annuelVal) { return Math.round(annuelVal * RATIO_YTD); }
+function ytdF(annuelVal, decimals=1) { return (annuelVal * RATIO_YTD).toFixed(decimals); }
+
+// Effectif interpolé entre jan et déc
+const EFF_YTD = Math.round(REF.effectifJan + (REF.effectifDec - REF.effectifJan) * RATIO_YTD);
+
+// Turn-over moyen YTD
+const TO_YTD = (REF.to12mois.slice(0, NB_MOIS_YTD).reduce((a,b)=>a+b,0) / NB_MOIS_YTD).toFixed(1);
+
+// Absentéisme YTD
+const ABS_TAUX_YTD  = (REF.absTauxAnnuel * 0.97).toFixed(1); // légèrement meilleur que l'an passé
+const ABS_JOURS_YTD = (REF.absJoursAnnuel * RATIO_YTD).toFixed(1);
+const ABS_COUT_YTD  = Math.round(REF.absCoutAnnuel * RATIO_YTD);
+
+// Formation YTD
+const FORM_TAUX_YTD   = Math.min(100, Math.round(REF.formTauxAnnuel * RATIO_YTD));
+const FORM_HEURES_YTD = (REF.formHeuresAnnuel * RATIO_YTD).toFixed(1);
+const FORM_BUDGET_YTD = Math.round(REF.formBudgetAnnuel * RATIO_YTD);
+
+// Progression plan de formation (objectif annuel × ratio YTD × légère variance)
+const FORM_PLAN_YTD = REF.formPlanAnnuel.map((fp,i) => ({
+  ...fp,
+  realise: Math.min(fp.objectif, Math.round(fp.objectif * RATIO_YTD * [0.95,0.88,0.78,0.82,0.72][i]))
+}));
+
+// Mouvements visibles = uniquement ceux dont le moisIdx < NB_MOIS_YTD
+const MVT_YTD = REF.tousMovements
+  .filter(m => m.moisIdx < NB_MOIS_YTD)
+  .sort((a,b) => b.moisIdx - a.moisIdx)
+  .map(m => ({...m, moisLabel: MOIS_LABELS[m.moisIdx] + ' ' + ANNEE}));
+
+// ─── OPTIONS DU FILTRE PÉRIODE ────────────────────────────────────────
+function buildPeriodeOptions() {
+  const sel = document.getElementById('f-periode');
+  sel.innerHTML = '';
+  // YTD toujours présent
+  const ytdOpt = document.createElement('option');
+  ytdOpt.value = 'ytd';
+  ytdOpt.textContent = `Jan. → ${MOIS_NOMS[MOIS_EN_COURS]} ${ANNEE} (YTD)`;
+  sel.appendChild(ytdOpt);
+  // Trimestres écoulés
+  const trimestres = [
+    {val:'q1', label:`T1 ${ANNEE} (jan.–mars)`,   moisMax:3},
+    {val:'q2', label:`T2 ${ANNEE} (avr.–juin)`,   moisMax:6},
+    {val:'q3', label:`T3 ${ANNEE} (jul.–sep.)`,   moisMax:9},
+    {val:'q4', label:`T4 ${ANNEE} (oct.–déc.)`,   moisMax:12},
+  ];
+  trimestres.forEach(t => {
+    if (NB_MOIS_YTD >= (t.moisMax - 2)) { // trimestre au moins commencé
+      const o = document.createElement('option');
+      o.value = t.val;
+      o.textContent = t.label;
+      sel.appendChild(o);
+    }
+  });
+}
+
+const PERIODES_CONFIG = {
+  ytd: () => ({ moisIdx: Array.from({length:NB_MOIS_YTD},(_,i)=>i), ratio: RATIO_YTD, label: `jan. → ${MOIS_NOMS[MOIS_EN_COURS]} ${ANNEE}` }),
+  q1:  () => ({ moisIdx: [0,1,2],                                     ratio: 3/12,     label: `T1 ${ANNEE}` }),
+  q2:  () => ({ moisIdx: [3,4,5].filter(i=>i<NB_MOIS_YTD),           ratio: Math.min(3,Math.max(0,NB_MOIS_YTD-3))/12, label: `T2 ${ANNEE}` }),
+  q3:  () => ({ moisIdx: [6,7,8].filter(i=>i<NB_MOIS_YTD),           ratio: Math.min(3,Math.max(0,NB_MOIS_YTD-6))/12, label: `T3 ${ANNEE}` }),
+  q4:  () => ({ moisIdx: [9,10,11].filter(i=>i<NB_MOIS_YTD),         ratio: Math.min(3,Math.max(0,NB_MOIS_YTD-9))/12, label: `T4 ${ANNEE}` }),
+};
+
+const SVC_MULT = {
+  tous:1, Commercial:0.283, IT:0.173, Production:0.222, 'RH':0.093, Finance:0.159, Direction:0.058
+};
+
+let charts = {};
+function destroyChart(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+const fmt  = n => new Intl.NumberFormat('fr-FR').format(Math.round(n));
+const fmtE = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+
+function getPeriode() {
+  const per = document.getElementById('f-periode').value;
+  return PERIODES_CONFIG[per] ? PERIODES_CONFIG[per]() : PERIODES_CONFIG['ytd']();
+}
+
+function applyFilters(){
+  const {label, ratio, moisIdx} = getPeriode();
+  document.getElementById('periode-note').textContent =
+    `Données affichées : ${label} — ${NB_MOIS_YTD} mois écoulés sur 12 en ${ANNEE}.`;
+  renderKPIs();
+  const activeTab = document.querySelector('.tab-btn.active').getAttribute('onclick').match(/'(\w+)'/)[1];
+  renderTab(activeTab);
+}
+
+function renderKPIs(){
+  const {ratio} = getPeriode();
+  const svc = document.getElementById('f-service').value;
+  const sm = SVC_MULT[svc];
+  const eff = Math.round(EFF_YTD * sm);
+  document.getElementById('kpis-row').innerHTML = `
+    <div class="kpi p">
+      <div class="kpi-val">${fmt(eff)}</div>
+      <div class="kpi-label">Effectif (ETP)<br>au ${TODAY.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</div>
+      <div class="kpi-delta delta-pos">↑ +${Math.round((EFF_YTD-REF.effectifJan)*sm)} depuis jan.</div>
+    </div>
+    <div class="kpi r">
+      <div class="kpi-val">${TO_YTD} %</div>
+      <div class="kpi-label">Turn-over YTD</div>
+      <div class="kpi-delta delta-pos">↓ −0,3 pts vs ${ANNEE-1}</div>
+    </div>
+    <div class="kpi a">
+      <div class="kpi-val">${ABS_TAUX_YTD} %</div>
+      <div class="kpi-label">Taux absentéisme<br>YTD</div>
+      <div class="kpi-delta delta-pos">↓ −0,2 pts vs ${ANNEE-1}</div>
+    </div>
+    <div class="kpi t">
+      <div class="kpi-val">${FORM_TAUX_YTD} %</div>
+      <div class="kpi-label">Taux de formation<br>YTD</div>
+      <div class="kpi-delta delta-neg">Obj. annuel : ${REF.formTauxAnnuel} %</div>
+    </div>
+  `;
+}
+
+function renderTab(name){
+  switch(name){
+    case 'effectifs':   renderEffectifs(); break;
+    case 'turnover':    renderTurnover();  break;
+    case 'absenteisme': renderAbsenteisme(); break;
+    case 'formation':   renderFormation(); break;
+  }
+}
+
+function showTab(name, btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  renderTab(name);
+}
+
+// ─── EFFECTIFS ────────────────────────────────────────────────────────
+function renderEffectifs(){
+  const svc = document.getElementById('f-service').value;
+  const sm  = SVC_MULT[svc];
+  const svcs = svc==='tous' ? SERVICES : [svc];
+  const maxEff = Math.max(...svcs.map(s=>REF.services[s]||0));
+  document.getElementById('bars-services').innerHTML = svcs.map(s=>{
+    const v = Math.round((REF.services[s]||0));
+    const pct = Math.round((v/maxEff)*100);
+    return `<div class="bar-row"><span class="bar-lbl">${s}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--p400)"></div></div><span class="bar-val">${Math.round(v*sm)}</span></div>`;
+  }).join('');
+  destroyChart('chart-contrats');
+  charts['chart-contrats'] = new Chart(document.getElementById('chart-contrats'),{
+    type:'doughnut',
+    data:{labels:['CDI','CDD','Alternance','Intérim'],datasets:[{data:[REF.cdi,REF.cdd,REF.alternance,REF.interim].map(v=>Math.round(v*sm)),backgroundColor:['#7F77DD','#EF9F27','#1D9E75','#D3D1C7'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},padding:12,boxWidth:10}}}}
+  });
+  destroyChart('chart-ages');
+  charts['chart-ages'] = new Chart(document.getElementById('chart-ages'),{
+    type:'bar',
+    data:{labels:Object.keys(REF.ages),datasets:[{data:Object.values(REF.ages).map(v=>Math.round(v*sm)),backgroundColor:'#AFA9EC',borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.04)'}}}}
+  });
+  const hfSvcs = svc==='tous' ? SERVICES : [svc];
+  destroyChart('chart-hf');
+  charts['chart-hf'] = new Chart(document.getElementById('chart-hf'),{
+    type:'bar',
+    data:{labels:hfSvcs,datasets:[
+      {label:'Hommes',data:hfSvcs.map(s=>Math.round((REF.hf[s]?.h||0)*sm)),backgroundColor:'#7F77DD',borderRadius:4,borderSkipped:false},
+      {label:'Femmes',data:hfSvcs.map(s=>Math.round((REF.hf[s]?.f||0)*sm)),backgroundColor:'#9FE1CB',borderRadius:4,borderSkipped:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'DM Sans',size:11},padding:12,boxWidth:10}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.04)'}}}}
+  });
+}
+
+// ─── TURN-OVER ────────────────────────────────────────────────────────
+function renderTurnover(){
+  const {moisIdx, ratio, label} = getPeriode();
+  const sm = SVC_MULT[document.getElementById('f-service').value];
+  const moisLabels = moisIdx.map(i=>MOIS_LABELS[i]);
+  const toData = moisIdx.map(i=>REF.to12mois[i]);
+  const entrees = moisIdx.reduce((s,i)=>s+REF.entreesMois[i],0);
+  const sorties = moisIdx.reduce((s,i)=>s+REF.sortiesMois[i],0);
+  document.getElementById('sparks-turnover').innerHTML = `
+    <div class="spark-card"><div class="spark-title">Turn-over moyen (${label})</div><div class="spark-val">${(toData.reduce((a,b)=>a+b,0)/toData.length).toFixed(1)} %</div><div style="font-size:11px;color:var(--t600)">↓ −0,3 pts vs ${ANNEE-1}</div></div>
+    <div class="spark-card"><div class="spark-title">Entrées</div><div class="spark-val">${Math.round(entrees*sm*5)}</div><div style="font-size:11px;color:var(--ink3)">${label}</div></div>
+    <div class="spark-card"><div class="spark-title">Sorties</div><div class="spark-val">${Math.round(sorties*sm*5)}</div><div style="font-size:11px;color:var(--ink3)">${label}</div></div>
+  `;
+  document.getElementById('to-evol-title').textContent = `Turn-over mensuel — ${label}`;
+  destroyChart('chart-to-evolution');
+  charts['chart-to-evolution'] = new Chart(document.getElementById('chart-to-evolution'),{
+    type:'line',
+    data:{labels:moisLabels,datasets:[{label:'Turn-over %',data:toData,borderColor:'#E24B4A',backgroundColor:'rgba(226,75,74,.08)',tension:.4,fill:true,pointBackgroundColor:'#E24B4A',pointRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{callback:v=>v+'%'},suggestedMin:6,suggestedMax:10}}}
+  });
+  const motifsData = Object.values(REF.motifs).map(v=>Math.round(v*ratio*12));
+  destroyChart('chart-motifs');
+  charts['chart-motifs'] = new Chart(document.getElementById('chart-motifs'),{
+    type:'doughnut',
+    data:{labels:Object.keys(REF.motifs),datasets:[{data:motifsData,backgroundColor:['#E24B4A','#EF9F27','#AFA9EC','#9FE1CB'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},padding:10,boxWidth:10}}}}
+  });
+  const mvtFiltered = MVT_YTD.filter(m => moisIdx.includes(m.moisIdx));
+  document.getElementById('mvt-title').textContent = `Mouvements — ${label}`;
+  document.getElementById('table-mouvements').innerHTML = `
+    <thead><tr><th>Mois</th><th>Collaborateur</th><th>Service</th><th>Mouvement</th><th>Détail</th></tr></thead>
+    <tbody>${mvtFiltered.length ? mvtFiltered.map(m=>`<tr>
+      <td>${m.moisLabel}</td>
+      <td style="font-weight:500;color:var(--ink)">${m.nom}</td>
+      <td>${m.service}</td>
+      <td><span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:${m.type==='Entrée'?'var(--t50)':'var(--r50)'};color:${m.type==='Entrée'?'var(--t600)':'var(--r600)'}">${m.type}</span></td>
+      <td style="color:var(--ink3)">${m.detail}</td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--ink3);padding:20px;">Aucun mouvement sur cette période.</td></tr>'}</tbody>
+  `;
+}
+
+// ─── ABSENTÉISME ──────────────────────────────────────────────────────
+function renderAbsenteisme(){
+  const {moisIdx, ratio, label} = getPeriode();
+  const sm = SVC_MULT[document.getElementById('f-service').value];
+  const moisLabels = moisIdx.map(i=>MOIS_LABELS[i]);
+  const absData = moisIdx.map(i=>Math.round(REF.abs12mois[i]*sm*7));
+  const joursP = (REF.absJoursAnnuel * ratio).toFixed(1);
+  const coutP  = Math.round(REF.absCoutAnnuel * ratio * sm);
+  document.getElementById('sparks-abs').innerHTML = `
+    <div class="spark-card"><div class="spark-title">Taux absentéisme (${label})</div><div class="spark-val">${ABS_TAUX_YTD} %</div><div style="font-size:11px;color:var(--t600)">↓ vs ${ANNEE-1}</div></div>
+    <div class="spark-card"><div class="spark-title">Jours moy. / collab.</div><div class="spark-val">${joursP} j</div><div style="font-size:11px;color:var(--ink3)">${label}</div></div>
+    <div class="spark-card"><div class="spark-title">Coût estimé</div><div class="spark-val">${fmtE(coutP)}</div><div style="font-size:11px;color:var(--r600)">charges incluses</div></div>
+  `;
+  document.getElementById('abs-evol-title').textContent = `Jours d'absence / mois — ${label}`;
+  destroyChart('chart-abs-evolution');
+  charts['chart-abs-evolution'] = new Chart(document.getElementById('chart-abs-evolution'),{
+    type:'bar',
+    data:{labels:moisLabels,datasets:[{label:'Jours abs.',data:absData,backgroundColor:'#AFA9EC',borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.04)'}}}}
+  });
+  destroyChart('chart-abs-types');
+  charts['chart-abs-types'] = new Chart(document.getElementById('chart-abs-types'),{
+    type:'doughnut',
+    data:{labels:Object.keys(REF.absTypes),datasets:[{data:Object.values(REF.absTypes),backgroundColor:['#7F77DD','#EF9F27','#1D9E75','#D3D1C7'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},padding:10,boxWidth:10}}}}
+  });
+  const absSvcs = Object.entries(REF.absServices);
+  const maxAbs = Math.max(...absSvcs.map(([,v])=>v));
+  document.getElementById('bars-abs').innerHTML = absSvcs.map(([s,v])=>{
+    const pct = Math.round((v/maxAbs)*100);
+    const color = v>4.5?'var(--r400)':v>3.5?'var(--a400)':'var(--t400)';
+    return `<div class="bar-row"><span class="bar-lbl">${s}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div><span class="bar-val">${v} %</span></div>`;
+  }).join('');
+}
+
+// ─── FORMATION ────────────────────────────────────────────────────────
+function renderFormation(){
+  const {ratio, label} = getPeriode();
+  const sm = SVC_MULT[document.getElementById('f-service').value];
+  const heures = (REF.formHeuresAnnuel * ratio).toFixed(1);
+  const budget = Math.round(REF.formBudgetAnnuel * ratio * sm);
+  const taux   = Math.min(100, Math.round(REF.formTauxAnnuel * ratio));
+  document.getElementById('sparks-form').innerHTML = `
+    <div class="spark-card"><div class="spark-title">Taux d'accès (${label})</div><div class="spark-val">${taux} %</div><div style="font-size:11px;color:var(--a600)">Obj. annuel : ${REF.formTauxAnnuel} %</div></div>
+    <div class="spark-card"><div class="spark-title">Heures / collaborateur</div><div class="spark-val">${heures} h</div><div style="font-size:11px;color:var(--ink3)">${label}</div></div>
+    <div class="spark-card"><div class="spark-title">Budget consommé</div><div class="spark-val">${fmtE(budget)}</div><div style="font-size:11px;color:var(--ink3)">sur enveloppe ${ANNEE}</div></div>
+  `;
+  // Taux de formation par service — proportionnel au ratio YTD
+  const formSvcData = SERVICES.map(s => Math.min(100, Math.round(REF.formServices[s] * ratio * (12/NB_MOIS_YTD) * RATIO_YTD)));
+  destroyChart('chart-form-services');
+  charts['chart-form-services'] = new Chart(document.getElementById('chart-form-services'),{
+    type:'bar',
+    data:{labels:SERVICES,datasets:[{data:SERVICES.map(s=>REF.formServices[s]),backgroundColor:SERVICES.map(s=>REF.formServices[s]>=80?'#1D9E75':REF.formServices[s]>=60?'#7F77DD':'#EF9F27'),borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.04)'},max:100,ticks:{callback:v=>v+'%'}}}}
+  });
+  destroyChart('chart-form-budget');
+  charts['chart-form-budget'] = new Chart(document.getElementById('chart-form-budget'),{
+    type:'doughnut',
+    data:{labels:Object.keys(REF.formBudgetRep),datasets:[{data:Object.values(REF.formBudgetRep),backgroundColor:['#7F77DD','#1D9E75','#EF9F27','#AFA9EC'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},padding:10,boxWidth:10}}}}
+  });
+  document.getElementById('form-plan-title').textContent = `Avancement plan de formation ${ANNEE}`;
+  document.getElementById('bars-form').innerHTML = FORM_PLAN_YTD.map(fp=>{
+    const pct = fp.objectif > 0 ? Math.round((fp.realise/fp.objectif)*100) : 0;
+    const color = pct>=80?'var(--t400)':pct>=50?'var(--p400)':'var(--a400)';
+    return `<div class="bar-row">
+      <span class="bar-lbl" style="width:175px">${fp.theme}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${fp.realise}%;background:${color}"></div></div>
+      <span class="bar-val">${fp.realise}%</span>
+      <span style="font-size:10px;color:var(--ink3);min-width:54px">obj. ${fp.objectif}%</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+buildPeriodeOptions();
+applyFilters();
+</script>
+</body>
+</html>

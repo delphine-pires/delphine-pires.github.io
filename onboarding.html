@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi Onboarding — Outil RH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --p50:#EEEDFE;--p100:#CECBF6;--p200:#AFA9EC;--p400:#7F77DD;--p600:#534AB7;--p800:#3C3489;--p900:#26215C;
+    --t50:#E1F5EE;--t100:#9FE1CB;--t400:#1D9E75;--t600:#0F6E56;
+    --a50:#FAEEDA;--a400:#EF9F27;--a600:#854F0B;
+    --r50:#FCEBEB;--r400:#E24B4A;--r600:#A32D2D;
+    --g50:#F1EFE8;--g100:#D3D1C7;--g200:#B4B2A9;--g400:#888780;
+    --ink:#1a1918;--ink2:#4a4946;--ink3:#888780;
+    --bg:#faf9f7;--card:#ffffff;--border:rgba(26,25,24,.1);
+    --radius:14px;--radius-sm:8px;
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;background:rgba(250,249,247,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-brand{font-family:var(--serif);font-size:16px;color:var(--ink);text-decoration:none;}
+  .nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s;}
+  .nav-back:hover{color:var(--ink);}
+
+  .hero{padding:48px 40px 32px;max-width:1000px;margin:0 auto;}
+  .hero-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--p600);background:var(--p50);border:1px solid var(--p100);padding:5px 12px;border-radius:20px;margin-bottom:18px;}
+  .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--p400);}
+  .hero h1{font-family:var(--serif);font-size:clamp(28px,4vw,46px);line-height:1.1;color:var(--ink);margin-bottom:10px;}
+  .hero h1 em{font-style:italic;color:var(--p600);}
+  .hero-desc{font-size:14px;color:var(--ink2);line-height:1.7;font-weight:300;max-width:520px;}
+
+  .main{max-width:1000px;margin:0 auto;padding:0 40px 80px;display:flex;flex-direction:column;gap:20px;}
+
+  /* KPIs globaux */
+  .kpis-global{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .kpi-g{border-radius:var(--radius-sm);padding:14px 16px;}
+  .kpi-g.purple{background:var(--p50);}
+  .kpi-g.teal{background:var(--t50);}
+  .kpi-g.amber{background:var(--a50);}
+  .kpi-g.red{background:var(--r50);}
+  .kpi-g-val{font-family:var(--serif);font-size:26px;line-height:1;margin-bottom:3px;}
+  .kpi-g.purple .kpi-g-val{color:var(--p800);}
+  .kpi-g.teal   .kpi-g-val{color:var(--t600);}
+  .kpi-g.amber  .kpi-g-val{color:var(--a600);}
+  .kpi-g.red    .kpi-g-val{color:var(--r600);}
+  .kpi-g-label{font-size:11px;line-height:1.4;}
+  .kpi-g.purple .kpi-g-label{color:var(--p600);}
+  .kpi-g.teal   .kpi-g-label{color:var(--t600);}
+  .kpi-g.amber  .kpi-g-label{color:var(--a600);}
+  .kpi-g.red    .kpi-g-label{color:var(--r600);}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;}
+  .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .card-title{font-size:13px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:8px;}
+
+  /* FILTRES */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-btn{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--ink3);cursor:pointer;transition:all .15s;font-family:var(--sans);}
+  .filter-btn:hover{border-color:var(--g400);color:var(--ink);}
+  .filter-btn.active{background:var(--p50);color:var(--p800);border-color:var(--p100);}
+
+  /* BOUTON AJOUTER */
+  .btn-add{font-size:13px;font-weight:500;color:#fff;background:var(--p600);border:none;padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:6px;transition:background .2s;}
+  .btn-add:hover{background:var(--p800);}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+  td{padding:12px 12px;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--g50);}
+  .col-name{font-weight:500;color:var(--ink);}
+  .col-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+
+  /* STATUT BADGES */
+  .status{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+  .status.attente{background:var(--g50);color:var(--g400);border:1px solid var(--g100);}
+  .status.cours{background:var(--p50);color:var(--p800);border:1px solid var(--p100);}
+  .status.integration{background:var(--a50);color:var(--a600);border:1px solid rgba(239,159,39,.2);}
+  .status.termine{background:var(--t50);color:var(--t600);border:1px solid var(--t100);}
+
+  /* BARRE PROGRESSION */
+  .progress-wrap{display:flex;align-items:center;gap:8px;}
+  .progress-track{flex:1;height:6px;background:var(--g50);border-radius:3px;overflow:hidden;min-width:80px;}
+  .progress-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+  .progress-pct{font-size:11px;color:var(--ink3);min-width:28px;}
+
+  /* BOUTON VOIR */
+  .btn-voir{font-size:12px;color:var(--p600);background:var(--p50);border:none;padding:4px 12px;border-radius:20px;cursor:pointer;font-family:var(--sans);transition:background .2s;}
+  .btn-voir:hover{background:var(--p100);}
+
+  /* MODAL DETAIL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,25,24,.5);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--card);border-radius:var(--radius);width:100%;max-width:620px;max-height:90vh;overflow-y:auto;padding:28px 30px;}
+  .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+  .modal-name{font-family:var(--serif);font-size:24px;color:var(--ink);margin-bottom:4px;}
+  .modal-meta{font-size:13px;color:var(--ink3);}
+  .modal-close{background:none;border:none;font-size:20px;color:var(--ink3);cursor:pointer;padding:4px;line-height:1;}
+  .modal-close:hover{color:var(--ink);}
+
+  /* TIMELINE CHECKLIST */
+  .timeline-modal{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
+  .tl-item{display:grid;grid-template-columns:56px 32px 1fr;gap:0 10px;align-items:start;}
+  .tl-day-label{font-size:10px;font-weight:500;color:var(--ink3);padding-top:8px;text-align:right;}
+  .tl-spine{display:flex;flex-direction:column;align-items:center;}
+  .tl-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:4px;cursor:pointer;transition:all .2s;border:2px solid transparent;}
+  .tl-circle.done{background:var(--t50);border-color:var(--t400);}
+  .tl-circle.done::after{content:'✓';color:var(--t600);font-weight:500;}
+  .tl-circle.pending{background:var(--g50);border-color:var(--g200);}
+  .tl-circle.pending::after{content:'○';color:var(--g400);}
+  .tl-circle.auto-done{background:var(--p50);border-color:var(--p400);}
+  .tl-circle.auto-done::after{content:'⚡';font-size:11px;}
+  .tl-line-v{width:1px;flex:1;min-height:14px;background:var(--border);}
+  .tl-item:last-child .tl-line-v{display:none;}
+  .tl-content{padding:6px 0 14px;}
+  .tl-step-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px;}
+  .tl-step-desc{font-size:12px;color:var(--ink3);line-height:1.5;}
+  .tl-tag{font-size:10px;padding:2px 8px;border-radius:20px;margin-top:4px;display:inline-block;}
+  .tl-tag.auto{background:var(--p50);color:var(--p800);}
+  .tl-tag.manual{background:var(--g50);color:var(--g400);}
+
+  /* MODAL FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group.full{grid-column:1/-1;}
+  .form-label{font-size:12px;font-weight:500;color:var(--ink2);}
+  .form-input{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;outline:none;transition:border-color .2s;}
+  .form-input:focus{border-color:var(--p400);}
+  .form-actions{display:flex;gap:10px;justify-content:flex-end;}
+  .btn-cancel{font-size:13px;color:var(--ink3);background:transparent;border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--sans);}
+  .btn-cancel:hover{border-color:var(--g400);}
+  .btn-submit{font-size:13px;font-weight:500;color:#fff;background:var(--p600);border:none;padding:8px 20px;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--sans);transition:background .2s;}
+  .btn-submit:hover{background:var(--p800);}
+
+  .legend{display:flex;gap:16px;flex-wrap:wrap;padding:12px 16px;background:var(--g50);border-radius:var(--radius-sm);}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);}
+
+  @media(max-width:680px){
+    nav{padding:0 20px;}
+    .hero,.main{padding-left:20px;padding-right:20px;}
+    .kpis-global{grid-template-columns:1fr 1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">Delphine</a>
+  <a href="index.html" class="nav-back">← Retour au portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Outil RH interactif</div>
+  <h1>Suivi <em>Onboarding</em><br>des nouveaux collaborateurs</h1>
+  <p class="hero-desc">Tableau de bord de pilotage des intégrations en cours — checklist automatisée J−7 à J+30, statuts en temps réel, et vue détaillée par collaborateur.</p>
+</div>
+
+<div class="main">
+
+  <!-- KPIs -->
+  <div class="kpis-global" id="kpis-global"></div>
+
+  <!-- TABLEAU -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🧑‍💼 Onboardings en cours</div>
+      <button class="btn-add" onclick="openAddModal()">+ Ajouter un arrivant</button>
+    </div>
+    <div class="filters" style="margin-bottom:16px;" id="filters">
+      <button class="filter-btn active" data-filter="tous" onclick="setFilter('tous',this)">Tous</button>
+      <button class="filter-btn" data-filter="attente" onclick="setFilter('attente',this)">En attente</button>
+      <button class="filter-btn" data-filter="cours" onclick="setFilter('cours',this)">En cours</button>
+      <button class="filter-btn" data-filter="integration" onclick="setFilter('integration',this)">Intégration</button>
+      <button class="filter-btn" data-filter="termine" onclick="setFilter('termine',this)">Terminé</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Collaborateur</th>
+            <th>Poste</th>
+            <th>Service</th>
+            <th>Date d'arrivée</th>
+            <th>Statut</th>
+            <th>Progression</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LÉGENDE -->
+  <div class="legend">
+    <div class="legend-item"><span style="width:14px;height:14px;border-radius:50%;background:var(--p50);border:2px solid var(--p400);display:inline-flex;align-items:center;justify-content:center;font-size:9px;">⚡</span> Action automatique (Power Automate)</div>
+    <div class="legend-item"><span style="width:14px;height:14px;border-radius:50%;background:var(--t50);border:2px solid var(--t400);display:inline-block;"></span> Étape validée manuellement</div>
+    <div class="legend-item"><span style="width:14px;height:14px;border-radius:50%;background:var(--g50);border:2px solid var(--g200);display:inline-block;"></span> En attente</div>
+  </div>
+
+</div>
+
+<!-- MODAL DÉTAIL -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-name" id="detail-name">—</div>
+        <div class="modal-meta" id="detail-meta">—</div>
+      </div>
+      <button class="modal-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div id="detail-progress" style="margin-bottom:20px;"></div>
+    <div class="timeline-modal" id="detail-timeline"></div>
+  </div>
+</div>
+
+<!-- MODAL AJOUT -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-name">Nouvel arrivant</div>
+        <div class="modal-meta">Ajouter un collaborateur au suivi</div>
+      </div>
+      <button class="modal-close" onclick="closeAdd()">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Prénom</label>
+        <input class="form-input" id="f-prenom" placeholder="Marie">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nom</label>
+        <input class="form-input" id="f-nom" placeholder="Dupont">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Poste</label>
+        <input class="form-input" id="f-poste" placeholder="Chargée RH">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service</label>
+        <input class="form-input" id="f-service" placeholder="Ressources Humaines">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date d'arrivée</label>
+        <input class="form-input" id="f-date" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Manager</label>
+        <input class="form-input" id="f-manager" placeholder="Sophie Martin">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeAdd()">Annuler</button>
+      <button class="btn-submit" onclick="addCollaborateur()">Ajouter au suivi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = ['#7F77DD','#1D9E75','#EF9F27','#E24B4A','#534AB7','#0F6E56','#854F0B','#A32D2D'];
+const BG     = ['#EEEDFE','#E1F5EE','#FAEEDA','#FCEBEB','#CECBF6','#9FE1CB','#FAC775','#F7C1C1'];
+
+const ETAPES = [
+  { jour:'J − 7', titre:'Déclenchement automatique',    desc:'Lecture de la date d\'arrivée dans le SIRH, création du dossier d\'intégration.',          auto:true  },
+  { jour:'J − 5', titre:'Notifications parties prenantes', desc:'Emails envoyés au manager, à l\'IT et aux facilities pour préparer l\'arrivée.', auto:true  },
+  { jour:'J − 2', titre:'Email de bienvenue',            desc:'Envoi personnalisé au futur collaborateur avec informations pratiques et planning J1.',     auto:true  },
+  { jour:'J + 1', titre:'Accueil physique',              desc:'Accueil par le manager, remise du matériel, présentation de l\'équipe.',                    auto:false },
+  { jour:'J + 3', titre:'Accès et outils configurés',   desc:'Vérification que tous les accès sont opérationnels (email, outils métier, badge).',         auto:false },
+  { jour:'J + 7', titre:'Point d\'étonnement',           desc:'Premier bilan avec le manager — ressenti, questions, ajustements.',                         auto:false },
+  { jour:'J + 15',titre:'Formation métier',              desc:'Participation aux formations internes prévues au plan d\'intégration.',                      auto:false },
+  { jour:'J + 30',titre:'Bilan d\'intégration',          desc:'Questionnaire de satisfaction envoyé automatiquement, rapport consolidé.',                   auto:true  },
+];
+
+let currentFilter = 'tous';
+let currentDetailId = null;
+
+const today = new Date();
+function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate()+n); return r; }
+function fmtDate(d) { return new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+
+function getStatusFromDate(arrivee) {
+  const d = new Date(arrivee);
+  const diff = Math.round((d - today) / 86400000);
+  if (diff > 1)  return 'attente';
+  if (diff >= -7 && diff <= 1) return 'cours';
+  if (diff > -30) return 'integration';
+  return 'termine';
+}
+
+function getProgressFromDate(arrivee) {
+  const d = new Date(arrivee);
+  const diff = Math.round((today - d) / 86400000);
+  if (diff < 0) return 0;
+  return Math.min(100, Math.round((diff / 30) * 100));
+}
+
+function getStepsFromDate(arrivee, manualOverrides) {
+  const d = new Date(arrivee);
+  const offsets = [-7,-5,-2,1,3,7,15,30];
+  return offsets.map((o,i) => {
+    const stepDate = addDays(d, o);
+    const passed = today >= stepDate;
+    const key = 'step_' + i;
+    if (manualOverrides && manualOverrides[key] !== undefined) return manualOverrides[key];
+    if (ETAPES[i].auto && passed) return 'auto-done';
+    if (passed) return 'pending';
+    return 'pending';
+  });
+}
+
+let data = [
+  { id:1, prenom:'Sophie',  nom:'Martin',   poste:'Responsable Marketing',   service:'Marketing',  arrivee: fmtDateISO(addDays(today,-5)),  manager:'Jean Moreau',    couleur:0, steps:{step_0:'auto-done',step_1:'auto-done',step_2:'auto-done',step_3:'done',step_4:'done'} },
+  { id:2, prenom:'Lucas',   nom:'Bernard',  poste:'Développeur Back-end',     service:'IT',         arrivee: fmtDateISO(addDays(today,-18)), manager:'Claire Petit',   couleur:1, steps:{step_0:'auto-done',step_1:'auto-done',step_2:'auto-done',step_3:'done',step_4:'done',step_5:'done',step_6:'done'} },
+  { id:3, prenom:'Camille', nom:'Dubois',   poste:'Chargée de formation',     service:'RH',         arrivee: fmtDateISO(addDays(today, 4)),  manager:'Marie Lambert',  couleur:2, steps:{} },
+  { id:4, prenom:'Antoine', nom:'Leroy',    poste:'Contrôleur de gestion',    service:'Finance',    arrivee: fmtDateISO(addDays(today,-32)), manager:'Paul Girard',    couleur:3, steps:{step_0:'auto-done',step_1:'auto-done',step_2:'auto-done',step_3:'done',step_4:'done',step_5:'done',step_6:'done',step_7:'auto-done'} },
+  { id:5, prenom:'Emma',    nom:'Thomas',   poste:'Assistante commerciale',   service:'Commercial', arrivee: fmtDateISO(addDays(today,-1)),  manager:'Nicolas Blanc',  couleur:4, steps:{step_0:'auto-done',step_1:'auto-done',step_2:'auto-done'} },
+];
+
+let nextId = 6;
+
+function fmtDateISO(d) {
+  return d.toISOString().split('T')[0];
+}
+
+function getStatus(p) { return getStatusFromDate(p.arrivee); }
+function getProgress(p) { return getProgressFromDate(p.arrivee); }
+
+function statusLabel(s) {
+  return {attente:'En attente',cours:'En cours',integration:'Intégration',termine:'Terminé'}[s] || s;
+}
+function progressColor(pct) {
+  if (pct >= 100) return 'var(--t400)';
+  if (pct >= 50)  return 'var(--p400)';
+  if (pct >= 20)  return 'var(--a400)';
+  return 'var(--g200)';
+}
+
+function renderKPIs() {
+  const total   = data.length;
+  const cours   = data.filter(p => getStatus(p)==='cours').length;
+  const integration = data.filter(p => getStatus(p)==='integration').length;
+  const termine = data.filter(p => getStatus(p)==='termine').length;
+  document.getElementById('kpis-global').innerHTML = `
+    <div class="kpi-g purple"><div class="kpi-g-val">${total}</div><div class="kpi-g-label">Onboardings<br>suivis</div></div>
+    <div class="kpi-g teal"><div class="kpi-g-val">${cours}</div><div class="kpi-g-label">En cours<br>cette semaine</div></div>
+    <div class="kpi-g amber"><div class="kpi-g-val">${integration}</div><div class="kpi-g-label">En phase<br>d'intégration</div></div>
+    <div class="kpi-g teal"><div class="kpi-g-val">${termine}</div><div class="kpi-g-label">Intégrations<br>terminées</div></div>
+  `;
+}
+
+function renderTable() {
+  const filtered = currentFilter === 'tous' ? data : data.filter(p => getStatus(p) === currentFilter);
+  const tbody = document.getElementById('table-body');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--ink3);padding:32px;">Aucun onboarding pour ce filtre.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(p => {
+    const s = getStatus(p);
+    const pct = getProgress(p);
+    const initiales = p.prenom[0] + p.nom[0];
+    return `
+      <tr>
+        <td><div class="col-avatar" style="background:${BG[p.couleur]};color:${COLORS[p.couleur]};">${initiales}</div></td>
+        <td class="col-name">${p.prenom} ${p.nom}</td>
+        <td style="color:var(--ink2)">${p.poste}</td>
+        <td style="color:var(--ink3)">${p.service}</td>
+        <td style="color:var(--ink3)">${fmtDate(p.arrivee)}</td>
+        <td><span class="status ${s}">${statusLabel(s)}</span></td>
+        <td>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${progressColor(pct)}"></div></div>
+            <span class="progress-pct">${pct}%</span>
+          </div>
+        </td>
+        <td><button class="btn-voir" onclick="openDetail(${p.id})">Voir →</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function render() { renderKPIs(); renderTable(); }
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function openDetail(id) {
+  const p = data.find(x => x.id === id);
+  if (!p) return;
+  currentDetailId = id;
+  document.getElementById('detail-name').textContent = p.prenom + ' ' + p.nom;
+  document.getElementById('detail-meta').textContent = p.poste + ' · ' + p.service + ' · Manager : ' + p.manager + ' · Arrivée : ' + fmtDate(p.arrivee);
+  const pct = getProgress(p);
+  document.getElementById('detail-progress').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:12px;color:var(--ink3)">Progression globale</span>
+      <span style="font-size:13px;font-weight:500;color:var(--p600)">${pct}%</span>
+    </div>
+    <div style="height:8px;background:var(--g50);border-radius:4px;overflow:hidden;">
+      <div style="height:100%;width:${pct}%;background:${progressColor(pct)};border-radius:4px;transition:width .4s"></div>
+    </div>
+  `;
+  const steps = p.steps || {};
+  document.getElementById('detail-timeline').innerHTML = ETAPES.map((e, i) => {
+    const key = 'step_' + i;
+    const state = steps[key] || (e.auto ? 'auto-done' : 'pending');
+    const isDone = state === 'done' || state === 'auto-done';
+    return `
+      <div class="tl-item">
+        <div class="tl-day-label">${e.jour}</div>
+        <div class="tl-spine">
+          <div class="tl-circle ${state}" onclick="toggleStep(${id},${i})" title="${e.auto ? 'Étape automatique' : 'Cliquer pour valider'}"></div>
+          <div class="tl-line-v"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-step-title" style="color:${isDone ? 'var(--ink)' : 'var(--ink3)'}">${e.titre}</div>
+          <div class="tl-step-desc">${e.desc}</div>
+          <span class="tl-tag ${e.auto ? 'auto' : 'manual'}">${e.auto ? '⚡ Automatique' : '👤 Manuel'}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('modal-detail').classList.add('open');
+}
+
+function toggleStep(id, stepIndex) {
+  const p = data.find(x => x.id === id);
+  if (!p) return;
+  const key = 'step_' + stepIndex;
+  const e = ETAPES[stepIndex];
+  if (e.auto) return;
+  if (!p.steps) p.steps = {};
+  p.steps[key] = p.steps[key] === 'done' ? 'pending' : 'done';
+  openDetail(id);
+  render();
+}
+
+function closeDetail() {
+  document.getElementById('modal-detail').classList.remove('open');
+  currentDetailId = null;
+}
+
+function openAddModal() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 7);
+  document.getElementById('f-date').value = fmtDateISO(tomorrow);
+  document.getElementById('modal-add').classList.add('open');
+}
+function closeAdd() { document.getElementById('modal-add').classList.remove('open'); }
+
+function addCollaborateur() {
+  const prenom  = document.getElementById('f-prenom').value.trim();
+  const nom     = document.getElementById('f-nom').value.trim();
+  const poste   = document.getElementById('f-poste').value.trim();
+  const service = document.getElementById('f-service').value.trim();
+  const arrivee = document.getElementById('f-date').value;
+  const manager = document.getElementById('f-manager').value.trim();
+  if (!prenom || !nom || !arrivee) { alert('Merci de renseigner au minimum le prénom, le nom et la date d\'arrivée.'); return; }
+  data.push({ id: nextId++, prenom, nom, poste: poste || 'Poste non renseigné', service: service || 'Service non renseigné', arrivee, manager: manager || 'Non renseigné', couleur: (nextId % COLORS.length), steps: {} });
+  closeAdd();
+  ['f-prenom','f-nom','f-poste','f-service','f-manager'].forEach(id => document.getElementById(id).value = '');
+  render();
+}
+
+document.getElementById('modal-detail').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetail(); });
+document.getElementById('modal-add').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdd(); });
+
+render();
+</script>
+</body>
+</html>

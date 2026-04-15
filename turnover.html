@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur de coût du turn-over — Outil RH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --p50: #EEEDFE; --p100: #CECBF6; --p400: #7F77DD; --p600: #534AB7; --p800: #3C3489; --p900: #26215C;
+    --t50: #E1F5EE; --t400: #1D9E75; --t600: #0F6E56;
+    --a50: #FAEEDA; --a400: #EF9F27; --a600: #854F0B;
+    --r50: #FCEBEB; --r400: #E24B4A; --r600: #A32D2D;
+    --g50: #F1EFE8; --g200: #B4B2A9; --g400: #888780;
+    --ink: #1a1918; --ink2: #4a4946; --ink3: #888780;
+    --bg: #faf9f7; --card: #ffffff; --border: rgba(26,25,24,.1);
+    --radius: 14px; --radius-sm: 8px;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 56px;
+    background: rgba(250,249,247,.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-brand { font-family: var(--serif); font-size: 16px; color: var(--ink); text-decoration: none; }
+  .nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color .2s; }
+  .nav-back:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero { padding: 56px 40px 40px; max-width: 860px; margin: 0 auto; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--r600); background: var(--r50); border: 1px solid rgba(226,75,74,.2); padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--r400); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); line-height: 1.1; color: var(--ink); margin-bottom: 12px; }
+  .hero h1 em { font-style: italic; color: var(--r600); }
+  .hero-desc { font-size: 15px; color: var(--ink2); line-height: 1.7; font-weight: 300; max-width: 560px; }
+
+  /* LAYOUT */
+  .main { max-width: 860px; margin: 0 auto; padding: 0 40px 80px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; }
+  .card-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .card-title-icon { font-size: 16px; }
+
+  /* SLIDERS */
+  .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .inputs-grid { grid-template-columns: 1fr; } }
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-label { font-size: 12px; font-weight: 500; color: var(--ink2); display: flex; justify-content: space-between; align-items: center; }
+  .input-value { font-size: 14px; font-weight: 500; color: var(--p600); background: var(--p50); padding: 2px 10px; border-radius: 20px; min-width: 80px; text-align: center; }
+  .input-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+  input[type="range"] {
+    width: 100%; height: 4px; border-radius: 2px; outline: none; border: none;
+    background: linear-gradient(to right, var(--p400) 0%, var(--p400) var(--val, 50%), var(--g50) var(--val, 50%), var(--g50) 100%);
+    cursor: pointer; appearance: none; -webkit-appearance: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--p600); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(83,74,183,.3); cursor: pointer;
+  }
+
+  /* RÉSULTATS KPIs */
+  .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 600px) { .results-grid { grid-template-columns: 1fr; } }
+  .result-kpi { border-radius: var(--radius-sm); padding: 16px 18px; }
+  .result-kpi.red    { background: var(--r50); }
+  .result-kpi.amber  { background: var(--a50); }
+  .result-kpi.purple { background: var(--p50); }
+  .kpi-val { font-family: var(--serif); font-size: 28px; line-height: 1; margin-bottom: 4px; }
+  .result-kpi.red    .kpi-val { color: var(--r600); }
+  .result-kpi.amber  .kpi-val { color: var(--a600); }
+  .result-kpi.purple .kpi-val { color: var(--p800); }
+  .kpi-label { font-size: 11px; line-height: 1.4; }
+  .result-kpi.red    .kpi-label { color: var(--r600); }
+  .result-kpi.amber  .kpi-label { color: var(--a600); }
+  .result-kpi.purple .kpi-label { color: var(--p800); }
+
+  /* DÉTAIL COÛTS */
+  .costs-breakdown { display: flex; flex-direction: column; gap: 10px; }
+  .cost-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--g50); border-radius: var(--radius-sm); }
+  .cost-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
+  .cost-label { flex: 1; font-size: 13px; color: var(--ink2); }
+  .cost-sublabel { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+  .cost-amount { font-size: 14px; font-weight: 500; color: var(--ink); min-width: 90px; text-align: right; }
+  .cost-bar-wrap { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+  .cost-bar { height: 100%; border-radius: 3px; background: var(--p400); transition: width .4s ease; }
+
+  /* GRAPHIQUE */
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* COMPARAISON */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card { border-radius: var(--radius-sm); padding: 16px 18px; }
+  .compare-card.bad  { background: var(--r50); border: 1px solid rgba(226,75,74,.15); }
+  .compare-card.good { background: var(--t50); border: 1px solid rgba(29,158,117,.15); }
+  .compare-title { font-size: 12px; font-weight: 500; margin-bottom: 10px; }
+  .compare-card.bad  .compare-title { color: var(--r600); }
+  .compare-card.good .compare-title { color: var(--t600); }
+  .compare-val { font-family: var(--serif); font-size: 24px; margin-bottom: 6px; }
+  .compare-card.bad  .compare-val { color: var(--r600); }
+  .compare-card.good .compare-val { color: var(--t600); }
+  .compare-items { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
+  .compare-item { font-size: 12px; display: flex; gap: 6px; align-items: flex-start; }
+  .compare-card.bad  .compare-item { color: var(--r600); }
+  .compare-card.good .compare-item { color: var(--t600); }
+
+  /* INSIGHT */
+  .insight { background: var(--p50); border-radius: var(--radius-sm); padding: 16px 18px; border-left: 3px solid var(--p400); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .insight p { font-size: 13px; color: var(--p800); line-height: 1.7; }
+  .insight strong { font-weight: 500; color: var(--p900); }
+
+  /* FOOTER */
+  .tool-footer { text-align: center; padding: 20px 40px 40px; }
+  .tool-footer p { font-size: 12px; color: var(--ink3); }
+  .tool-footer a { color: var(--p400); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 20px; }
+    .hero, .main { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">Delphine</a>
+  <a href="index.html" class="nav-back">← Retour au portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Outil RH interactif</div>
+  <h1>Simulateur de coût<br>du <em>turn-over</em></h1>
+  <p class="hero-desc">Estimez le coût réel du départ d'un collaborateur — recrutement, perte de productivité, formation. Ajustez les paramètres et visualisez l'impact en temps réel.</p>
+</div>
+
+<div class="main">
+
+  <!-- PARAMÈTRES -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-icon">⚙️</span> Paramètres du poste</div>
+    <div class="inputs-grid">
+      <div class="input-group">
+        <div class="input-label">
+          <span>Salaire brut annuel</span>
+          <span class="input-value" id="val-salaire">40 000 €</span>
+        </div>
+        <input type="range" id="salaire" min="20000" max="120000" step="1000" value="40000">
+        <div class="input-sub">Coût employeur ≈ salaire × 1,45</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">
+          <span>Nombre de départs / an</span>
+          <span class="input-value" id="val-departs">5</span>
+        </div>
+        <input type="range" id="departs" min="1" max="50" step="1" value="5">
+        <div class="input-sub">Sur l'ensemble de l'entreprise</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">
+          <span>Durée de recrutement</span>
+          <span class="input-value" id="val-recrutement">2 mois</span>
+        </div>
+        <input type="range" id="recrutement" min="1" max="12" step="1" value="2">
+        <div class="input-sub">Entre la démission et l'arrivée</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">
+          <span>Montée en compétences</span>
+          <span class="input-value" id="val-montee">3 mois</span>
+        </div>
+        <input type="range" id="montee" min="1" max="24" step="1" value="3">
+        <div class="input-sub">Avant pleine productivité</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">
+          <span>Perte productivité équipe</span>
+          <span class="input-value" id="val-productivite">20 %</span>
+        </div>
+        <input type="range" id="productivite" min="5" max="60" step="5" value="20">
+        <div class="input-sub">Impact sur l'équipe pendant la période</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">
+          <span>Coût formation nouveau arrivant</span>
+          <span class="input-value" id="val-formation">2 000 €</span>
+        </div>
+        <input type="range" id="formation" min="0" max="15000" step="500" value="2000">
+        <div class="input-sub">Formation initiale + accompagnement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-icon">📊</span> Résultats</div>
+    <div class="results-grid">
+      <div class="result-kpi red">
+        <div class="kpi-val" id="res-par-depart">—</div>
+        <div class="kpi-label">Coût estimé<br>par départ</div>
+      </div>
+      <div class="result-kpi amber">
+        <div class="kpi-val" id="res-annuel">—</div>
+        <div class="kpi-label">Coût annuel total<br>du turn-over</div>
+      </div>
+      <div class="result-kpi purple">
+        <div class="kpi-val" id="res-mois-salaire">—</div>
+        <div class="kpi-label">Équivalent en mois<br>de salaire / départ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉTAIL -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-icon">🔍</span> Détail des coûts par départ</div>
+    <div class="costs-breakdown">
+      <div class="cost-row">
+        <span class="cost-icon">🔎</span>
+        <div><div class="cost-label">Recrutement</div><div class="cost-sublabel">Annonces, temps RH, cabinet éventuel</div></div>
+        <div class="cost-bar-wrap"><div class="cost-bar" id="bar-recrutement"></div></div>
+        <div class="cost-amount" id="amt-recrutement">—</div>
+      </div>
+      <div class="cost-row">
+        <span class="cost-icon">📉</span>
+        <div><div class="cost-label">Perte de productivité</div><div class="cost-sublabel">Poste vacant + montée en compétences</div></div>
+        <div class="cost-bar-wrap"><div class="cost-bar" id="bar-productivite"></div></div>
+        <div class="cost-amount" id="amt-productivite">—</div>
+      </div>
+      <div class="cost-row">
+        <span class="cost-icon">🎓</span>
+        <div><div class="cost-label">Formation & intégration</div><div class="cost-sublabel">Formation initiale + accompagnement RH</div></div>
+        <div class="cost-bar-wrap"><div class="cost-bar" id="bar-formation"></div></div>
+        <div class="cost-amount" id="amt-formation">—</div>
+      </div>
+      <div class="cost-row">
+        <span class="cost-icon">👥</span>
+        <div><div class="cost-label">Impact équipe</div><div class="cost-sublabel">Surcharge collègues pendant la période</div></div>
+        <div class="cost-bar-wrap"><div class="cost-bar" id="bar-equipe"></div></div>
+        <div class="cost-amount" id="amt-equipe">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAPHIQUE -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-icon">📈</span> Répartition des coûts</div>
+    <div class="chart-wrap">
+      <canvas id="chart-repartition"></canvas>
+    </div>
+  </div>
+
+  <!-- COMPARAISON -->
+  <div class="card">
+    <div class="card-title"><span class="card-title-icon">⚖️</span> Comparaison — avec et sans programme de rétention</div>
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <div class="compare-title">Sans programme de rétention</div>
+        <div class="compare-val" id="comp-sans">—</div>
+        <div class="compare-items">
+          <div class="compare-item">✗ Turn-over subi</div>
+          <div class="compare-item">✗ Coûts non anticipés</div>
+          <div class="compare-item">✗ Perte de savoir-faire</div>
+          <div class="compare-item">✗ Impact moral équipe</div>
+        </div>
+      </div>
+      <div class="compare-card good">
+        <div class="compare-title">Avec programme de rétention (−30 % de départs)</div>
+        <div class="compare-val" id="comp-avec">—</div>
+        <div class="compare-items">
+          <div class="compare-item">✓ Économie estimée : <strong id="comp-economie">—</strong></div>
+          <div class="compare-item">✓ Turn-over maîtrisé</div>
+          <div class="compare-item">✓ Continuité des équipes</div>
+          <div class="compare-item">✓ ROI programme visible</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHT -->
+  <div class="insight">
+    <p id="insight-text">Ajustez les paramètres pour voir l'analyse apparaître ici.</p>
+  </div>
+
+</div>
+
+<div class="tool-footer">
+  <p>Outil conçu par <a href="index.html">Delphine</a> · Product Builder spécialisée RH · Les estimations sont basées sur des ratios RH standards (SHRM, Deloitte)</p>
+</div>
+
+<script>
+  const fmt = n => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  const fmtK = n => n >= 1000 ? (n/1000).toFixed(n >= 10000 ? 0 : 1) + ' k€' : fmt(n);
+
+  let chart = null;
+
+  function getVals() {
+    return {
+      salaire:      parseInt(document.getElementById('salaire').value),
+      departs:      parseInt(document.getElementById('departs').value),
+      recrutement:  parseInt(document.getElementById('recrutement').value),
+      montee:       parseInt(document.getElementById('montee').value),
+      productivite: parseInt(document.getElementById('productivite').value),
+      formation:    parseInt(document.getElementById('formation').value),
+    };
+  }
+
+  function compute() {
+    const v = getVals();
+    const coutEmployeur = v.salaire * 1.45;
+    const salairesMensuel = coutEmployeur / 12;
+
+    const coutRecrutement = salairesMensuel * v.recrutement * 0.5 + 1500;
+    const coutProductivite = salairesMensuel * (v.recrutement + v.montee) * (v.productivite / 100);
+    const coutFormation = v.formation;
+    const coutEquipe = salairesMensuel * v.montee * 0.15;
+
+    const total = coutRecrutement + coutProductivite + coutFormation + coutEquipe;
+    const totalAnnuel = total * v.departs;
+    const moisSalaire = Math.round((total / (v.salaire / 12)) * 10) / 10;
+
+    return { total, totalAnnuel, moisSalaire, coutRecrutement, coutProductivite, coutFormation, coutEquipe };
+  }
+
+  function updateSliderStyle(input) {
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    const val = parseFloat(input.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    input.style.setProperty('--val', pct + '%');
+  }
+
+  function updateLabels() {
+    const v = getVals();
+    document.getElementById('val-salaire').textContent = fmt(v.salaire);
+    document.getElementById('val-departs').textContent = v.departs;
+    document.getElementById('val-recrutement').textContent = v.recrutement + ' mois';
+    document.getElementById('val-montee').textContent = v.montee + ' mois';
+    document.getElementById('val-productivite').textContent = v.productivite + ' %';
+    document.getElementById('val-formation').textContent = fmt(v.formation);
+  }
+
+  function updateResults() {
+    const r = compute();
+    const v = getVals();
+
+    document.getElementById('res-par-depart').textContent = fmtK(r.total);
+    document.getElementById('res-annuel').textContent = fmtK(r.totalAnnuel);
+    document.getElementById('res-mois-salaire').textContent = r.moisSalaire + ' mois';
+
+    const maxCost = Math.max(r.coutRecrutement, r.coutProductivite, r.coutFormation, r.coutEquipe);
+    const setPct = (id, val) => { document.getElementById(id).style.width = Math.round((val / maxCost) * 100) + '%'; };
+    setPct('bar-recrutement', r.coutRecrutement);
+    setPct('bar-productivite', r.coutProductivite);
+    setPct('bar-formation', r.coutFormation);
+    setPct('bar-equipe', r.coutEquipe);
+
+    document.getElementById('amt-recrutement').textContent = fmtK(r.coutRecrutement);
+    document.getElementById('amt-productivite').textContent = fmtK(r.coutProductivite);
+    document.getElementById('amt-formation').textContent = fmtK(r.coutFormation);
+    document.getElementById('amt-equipe').textContent = fmtK(r.coutEquipe);
+
+    const sansProg = r.totalAnnuel;
+    const avecProg = r.totalAnnuel * 0.7;
+    const economie = sansProg - avecProg;
+    document.getElementById('comp-sans').textContent = fmtK(sansProg) + ' / an';
+    document.getElementById('comp-avec').textContent = fmtK(avecProg) + ' / an';
+    document.getElementById('comp-economie').textContent = fmtK(economie);
+
+    const pctSalaire = Math.round((r.total / v.salaire) * 100);
+    document.getElementById('insight-text').innerHTML =
+      `Pour un poste à <strong>${fmt(v.salaire)}</strong>, chaque départ coûte environ <strong>${fmtK(r.total)}</strong> — soit <strong>${pctSalaire} % du salaire annuel</strong>. ` +
+      `Avec ${v.departs} départ${v.departs > 1 ? 's' : ''} par an, l'impact total s'élève à <strong>${fmtK(r.totalAnnuel)}</strong>. ` +
+      `Un programme de rétention réduisant le turn-over de 30 % permettrait d'économiser <strong>${fmtK(sansProg - avecProg)}</strong> par an.`;
+
+    updateChart(r);
+  }
+
+  function updateChart(r) {
+    const ctx = document.getElementById('chart-repartition').getContext('2d');
+    const data = {
+      labels: ['Recrutement', 'Perte productivité', 'Formation & intégration', 'Impact équipe'],
+      datasets: [{
+        data: [
+          Math.round(r.coutRecrutement),
+          Math.round(r.coutProductivite),
+          Math.round(r.coutFormation),
+          Math.round(r.coutEquipe)
+        ],
+        backgroundColor: ['#CECBF6', '#AFA9EC', '#7F77DD', '#534AB7'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    };
+
+    if (chart) {
+      chart.data = data;
+      chart.update('active');
+    } else {
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '62%',
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { font: { family: 'DM Sans', size: 12 }, color: '#4a4946', padding: 16, boxWidth: 12, boxHeight: 12 }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => ' ' + new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(ctx.raw)
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  document.querySelectorAll('input[type="range"]').forEach(input => {
+    updateSliderStyle(input);
+    input.addEventListener('input', () => {
+      updateSliderStyle(input);
+      updateLabels();
+      updateResults();
+    });
+  });
+
+  updateLabels();
+  updateResults();
+</script>
+</body>
+</html>
