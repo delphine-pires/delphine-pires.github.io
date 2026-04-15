@@ -129,6 +129,8 @@
   .icon-teal   { background: var(--t50); border: 1px solid rgba(29,158,117,.2); }
   .icon-amber  { background: var(--a50); border: 1px solid rgba(239,159,39,.2); }
   .icon-coral  { background: #FAECE7; border: 1px solid rgba(220,100,60,.2); }
+  .card-visual.red    { background: linear-gradient(135deg, #FDEAEA 0%, #fcc8c8 100%); }
+  .icon-red    { background: #FDEAEA; border: 1px solid rgba(210,50,50,.2); }
   .card-body { padding: 20px 22px 22px; }
   .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
   .badge {
@@ -139,6 +141,7 @@
   .badge-tech   { background: var(--t50); color: var(--t600); }
   .badge-ai     { background: #FAECE7; color: #712B13; }
   .badge-data   { background: var(--a50); color: var(--a600); }
+  .badge-auto   { background: #EDE9FE; color: #5B21B6; }
   .card-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
   .card-desc { font-size: 13px; color: var(--ink3); line-height: 1.6; margin-bottom: 14px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
@@ -478,6 +481,27 @@
         </div>
       </a>
 
+      <a class="project-card" href="#" onclick="window.open('turnover.html','_blank');return false;">
+        <div class="card-visual red">
+          <div class="card-visual-icon icon-red">📉</div>
+        </div>
+        <div class="card-body">
+          <div class="card-badges">
+            <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
+            <span class="badge badge-data tooltip-wrap" data-tooltip="Collecte, structuration et analyse de données pour aider à la décision">Data</span>
+          </div>
+          <div class="card-title">Simulateur de coût du turn-over</div>
+          <div class="card-desc">Outil interactif pour estimer le coût réel d'un départ — recrutement, perte de productivité, formation. Sliders, calculs en temps réel et graphique de répartition.</div>
+          <div class="card-footer">
+            <div class="card-tools">
+              <span class="tool-chip tooltip-wrap" data-tooltip="Langage de programmation qui rend les pages web interactives">JavaScript</span>
+              <span class="tool-chip tooltip-wrap" data-tooltip="Bibliothèque JavaScript pour créer des graphiques et visualisations de données">Chart.js</span>
+            </div>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -607,6 +631,10 @@
         <p>Avant ce projet, chaque intégration reposait sur une <strong>checklist Excel manuelle</strong> : emails oubliés, matériel commandé en retard, managers non prévenus. L'enjeu était de créer un système <strong>fiable, reproductible et sans intervention manuelle</strong>, intégré dans l'écosystème Microsoft 365 existant — sans budget additionnel.</p>
         <div class="context-chips"><span class="context-chip">30+ intégrations/an</span><span class="context-chip">Stack 100 % Microsoft 365</span><span class="context-chip">Zéro budget additionnel</span></div>
       </div>
+    </div>
+    <div style="background:var(--p50);border-radius:var(--radius);padding:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <p style="margin:0;flex:1;min-width:200px;">Vous souhaitez voir ce workflow en action ? Voici une version interactive et démontrable de cet outil.</p>
+      <a href="#" onclick="window.open('onboarding.html','_blank');return false;" class="btn-primary" style="white-space:nowrap;">Voir la démo →</a>
     </div>
     <div class="panel">
       <div class="panel-title">Ce que j'ai appris</div>
