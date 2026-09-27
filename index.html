@@ -892,10 +892,10 @@
     </div>
     <img src="Application Post Formation.jpeg" alt="Interface de l'application Post-Formation" style="width:100%; border-radius:var(--radius); border:1px solid var(--border); margin-bottom:24px;">
     <div class="kpis">
-      <div class="kpi"><div class="kpi-val">8</div><div class="kpi-label">Champs extraits automatiquement par document (OCR)</div></div>
-      <div class="kpi"><div class="kpi-val">0 doublon</div><div class="kpi-label">Détection automatique par hash MD5</div></div>
-      <div class="kpi"><div class="kpi-val">5 statuts</div><div class="kpi-label">Workflow complet de bout en bout</div></div>
-      <div class="kpi"><div class="kpi-val">Full-stack</div><div class="kpi-label">React + NestJS + PostgreSQL</div></div>
+      <div class="kpi"><div class="kpi-val">−3 h</div><div class="kpi-label">par semaine et par gestionnaire formation</div><div class="kpi-delta">↑ Temps libéré pour l'accompagnement</div></div>
+      <div class="kpi"><div class="kpi-val">×3</div><div class="kpi-label">Rapidité de contrôle des attestations</div><div class="kpi-delta">↑ OCR vs vérification manuelle</div></div>
+      <div class="kpi"><div class="kpi-val">0</div><div class="kpi-label">Doublon détecté : contrôle automatique à l'import</div><div class="kpi-delta">↑ Détection par empreinte numérique (MD5)</div></div>
+      <div class="kpi"><div class="kpi-val">Prod</div><div class="kpi-label">En production depuis avril 2026</div><div class="kpi-delta">↑ Projet réalisé et déployé de A à Z</div></div>
     </div>
 
     <div class="panel" style="margin-bottom:20px;">
@@ -972,7 +972,7 @@
     <div class="panel" style="margin-bottom:20px;">
       <div class="panel-title">Contexte &amp; problème résolu</div>
       <div class="context-block">
-        <p>La gestion des attestations de formation reposait sur des <strong>échanges email manuels et des dossiers partagés non structurés</strong> : documents mal nommés, doublons fréquents, validations oubliées. L'enjeu était de construire un <strong>outil métier sur mesure</strong>, capable d'automatiser l'extraction des données clés tout en conservant une validation humaine pour les cas ambigus.</p>
+        <p>La gestion des attestations de formation concentrait plusieurs problèmes chroniques : <strong>mails et documents non reçus ou reçus en plusieurs fois</strong>, volume important de retours administratifs à absorber, documents à découper manuellement avant traitement et archivage. J'ai conçu et développé cet outil métier sur mesure, aujourd'hui <strong>déployé et utilisé en production depuis avril 2026</strong>, pour automatiser l'extraction des données clés tout en conservant une validation humaine pour les cas ambigus.</p>
         <div class="context-chips">
           <span class="context-chip">Développement AI-assisted (Claude Code)</span>
           <span class="context-chip">Architecture full-stack from scratch</span>
@@ -983,11 +983,11 @@
     </div>
 
     <div class="panel">
-      <div class="panel-title">Ce que j'ai appris</div>
+      <div class="panel-title">Mes partis pris de conception</div>
       <div class="learning-list">
-        <div class="learning-item"><span class="learning-arrow">→</span><span>Concevoir un produit de bout en bout oblige à arbitrer en permanence entre ce que la technologie peut faire et ce que l'utilisateur comprend réellement : l'OCR à 80 % de précision est inutile si l'interface de correction est trop complexe.</span></div>
-        <div class="learning-item"><span class="learning-arrow">→</span><span>Le développement assisté par IA (Claude Code) m'a permis de livrer une application full-stack sans être développeuse de formation, mais cela exige une rigueur de spécification plus grande, pas moins.</span></div>
-        <div class="learning-item"><span class="learning-arrow">→</span><span>La gestion du workflow (statuts, transitions, cas d'erreur) est la partie la plus sous-estimée d'un projet produit : c'est là que se cache 80 % de la complexité métier.</span></div>
+        <div class="learning-item"><span class="learning-arrow">→</span><span><strong>Arbitrer entre précision technique et adoption utilisateur.</strong> Un OCR seul ne suffit pas : j'ai intégré un algorithme et un module IA complémentaires pour améliorer la performance de reconnaissance, aboutissant à une précision opérationnelle validée en production. L'interface de correction reste disponible pour les cas ambigus.</span></div>
+        <div class="learning-item"><span class="learning-arrow">→</span><span><strong>Le développement assisté par IA exige plus de rigueur de spécification, pas moins.</strong> Claude Code m'a permis de livrer une application full-stack sans être développeuse de formation, à condition de spécifier avec précision chaque comportement attendu, cas d'erreur inclus.</span></div>
+        <div class="learning-item"><span class="learning-arrow">→</span><span><strong>La gestion du workflow est le cœur du produit.</strong> Les statuts, transitions et cas d'erreur représentent 80 % de la complexité métier : c'est le premier sujet à cadrer avec les utilisateurs, avant même de parler de technologie.</span></div>
       </div>
     </div>
   </div>
