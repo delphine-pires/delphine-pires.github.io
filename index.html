@@ -1124,6 +1124,8 @@
       goToSection(a.getAttribute('href').slice(1));
     });
   });
+  // Lien direct vers une fiche depuis une démo : index.html#fiche-onboarding
+  if (location.hash.startsWith('#fiche-')) showDetail(location.hash.slice(7));
 </script>
 </body>
 </html>
