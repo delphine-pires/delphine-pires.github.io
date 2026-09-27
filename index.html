@@ -373,6 +373,8 @@
     transition-delay: 0s;
     z-index: 200;
   }
+  a.tag-link { text-decoration: none; cursor: pointer; }
+  a.tag-link:hover { border-color: var(--p400); }
   .tooltip-wrap:hover::after,
   .tooltip-wrap:hover::before {
     opacity: 1;
@@ -415,7 +417,7 @@
         <a href="#apropos" class="btn-secondary">À propos</a>
       </div>
       <div class="hero-chips">
-        <span class="chip tooltip-wrap" data-tooltip="Professional Scrum Product Owner : certification Scrum.org qui valide la maîtrise du rôle de Product Owner en Scrum">Certifiée PSPO I</span>
+        <a href="https://www.scrum.org/user/1695417" target="_blank" rel="noopener" class="chip tooltip-wrap tag-link" data-tooltip="Professional Scrum Product Owner : certification Scrum.org qui valide la maîtrise du rôle de Product Owner en Scrum (cliquer pour vérifier)">Certifiée PSPO I</a>
         <span class="chip tooltip-wrap" data-tooltip="Description précise de ce que l'outil doit faire, écran par écran, cas d'erreur inclus">Spécifications fonctionnelles</span>
         <span class="chip tooltip-wrap" data-tooltip="Plateforme low-code Microsoft pour automatiser des processus métier : workflows, notifications, rappels">Power Automate</span>
         <span class="chip tooltip-wrap" data-tooltip="Assistant de développement IA : écrit le code à partir de spécifications détaillées">Claude Code</span>
@@ -567,7 +569,7 @@
             <span class="skill-tag tooltip-wrap" data-tooltip="Traduire un besoin métier en règles de gestion, processus et fonctionnalités attendues">Analyse fonctionnelle</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Description précise de ce que l'outil doit faire, écran par écran, cas d'erreur inclus">Spécifications fonctionnelles</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Arbitrer l'ordre des fonctionnalités selon leur valeur pour les utilisateurs et leur coût">Priorisation</span>
-            <span class="skill-tag tooltip-wrap" data-tooltip="Cadre agile de développement par itérations courtes. Certifiée Professional Scrum Product Owner (PSPO I)">Scrum · PSPO I</span>
+            <a href="https://www.scrum.org/user/1695417" target="_blank" rel="noopener" class="skill-tag tooltip-wrap tag-link" data-tooltip="Cadre agile de développement par itérations courtes. Certifiée Professional Scrum Product Owner (PSPO I) (cliquer pour vérifier)">Scrum · PSPO I</a>
             <span class="skill-tag tooltip-wrap" data-tooltip="Pilotage des mises en production successives, en lien avec les équipes techniques">Pilotage des livraisons</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Préparation et exécution des tests avec les utilisateurs pour valider que l'outil répond au besoin avant sa mise en production">Recette applicative</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Accompagner les utilisateurs dans l'adoption d'un nouvel outil : communication, formation, suivi">Conduite du changement</span>
