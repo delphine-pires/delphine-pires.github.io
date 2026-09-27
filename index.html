@@ -274,6 +274,25 @@
   }
   .skill-tag.highlight { background: var(--p50); color: var(--p800); border-color: var(--p100); }
 
+  .cert-card { display: flex; align-items: center; gap: 14px; margin-top: 8px; padding: 14px 16px; background: var(--p50); border: 1px solid var(--p100); border-radius: var(--radius-sm); flex-wrap: wrap; }
+  .cert-badge { font-size: 12px; font-weight: 500; color: #fff; background: var(--p800); padding: 6px 10px; border-radius: 6px; white-space: nowrap; }
+  .cert-text { flex: 1; min-width: 180px; font-size: 13px; color: var(--p800); line-height: 1.5; }
+  .cert-text strong { display: block; color: var(--p900); font-weight: 500; }
+  .cert-link { font-size: 13px; font-weight: 500; color: var(--p800); text-decoration: none; white-space: nowrap; }
+  .cert-link:hover { text-decoration: underline; }
+
+  /* BACKLOG */
+  .backlog-intro { font-size: 12px; color: var(--ink3); margin: -8px 0 14px; }
+  .us-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .us-item { padding: 14px 16px; background: var(--g50); border-radius: var(--radius-sm); }
+  .us-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .us-id { font-size: 10px; font-weight: 500; color: var(--p800); background: var(--p50); border: 1px solid var(--p100); padding: 1px 7px; border-radius: 20px; }
+  .us-title { font-size: 12px; font-weight: 500; color: var(--ink); }
+  .us-story { font-size: 12px; color: var(--ink2); line-height: 1.6; margin-bottom: 8px; }
+  .us-story strong { font-weight: 500; color: var(--ink); }
+  .us-criteria { margin: 0; padding-left: 16px; font-size: 11px; color: var(--ink3); line-height: 1.6; }
+  .us-criteria em { font-style: normal; font-weight: 500; color: var(--ink2); }
+
   /* CONTACT */
   #contact { background: var(--p900); color: #fff; text-align: center; }
   #contact .section-eyebrow { color: var(--p200); }
@@ -384,6 +403,7 @@
         <a href="#apropos" class="btn-secondary">À propos</a>
       </div>
       <div class="hero-chips">
+        <span class="chip tooltip-wrap" style="background:var(--p50);color:var(--p800);border-color:var(--p100);font-weight:500;" data-tooltip="Professional Scrum Product Owner : certification Scrum.org qui valide la maîtrise du rôle de Product Owner en Scrum">Certifiée PSPO I</span>
         <span class="chip tooltip-wrap" data-tooltip="Plateforme low-code Microsoft pour automatiser des processus métier : workflows, notifications, rappels">Power Automate</span>
         <span class="chip tooltip-wrap" data-tooltip="Interface technique pour intégrer l'IA Claude d'Anthropic dans une application, par exemple pour générer les réponses d'un chatbot">Claude API</span>
         <span class="chip tooltip-wrap" data-tooltip="Outil Microsoft pour créer des tableaux de bord visuels à partir de données">Power BI</span>
@@ -521,6 +541,11 @@
         <p>RH de formation, <strong>Product Owner par pratique.</strong></p>
         <p>Depuis plusieurs années, je construis des produits RH : je cadre les besoins avec les parties prenantes, rédige les spécifications fonctionnelles, priorise les fonctionnalités et pilote les livraisons. Mon terrain de jeu : l'automatisation des processus RH, la data et l'IA appliquée à l'expérience collaborateur.</p>
         <p>À chaque projet, la même méthode — <strong>cadrer le besoin, spécifier, livrer, mesurer.</strong> Je parle à la fois la langue des <span class="tooltip-wrap" data-tooltip="Responsables Ressources Humaines">RRH</span> et celle des équipes techniques. Je cherche aujourd'hui un rôle de Product Owner ou Chef de projet SIRH pour en faire mon cœur de métier.</p>
+        <div class="cert-card">
+          <span class="cert-badge">PSPO I</span>
+          <div class="cert-text"><strong>Professional Scrum Product Owner I</strong>Certification délivrée par Scrum.org</div>
+          <a href="https://www.scrum.org/certificates/1349106" target="_blank" rel="noopener" class="cert-link">Vérifier →</a>
+        </div>
       </div>
       <div class="skills-col">
         <div class="skill-group">
@@ -529,8 +554,10 @@
             <span class="skill-tag highlight tooltip-wrap" data-tooltip="Comprendre le problème, les utilisateurs et les contraintes avant de concevoir quoi que ce soit">Cadrage du besoin</span>
             <span class="skill-tag highlight tooltip-wrap" data-tooltip="Description précise de ce que l'outil doit faire, écran par écran, cas d'erreur inclus">Spécifications fonctionnelles</span>
             <span class="skill-tag highlight tooltip-wrap" data-tooltip="Arbitrer l'ordre des fonctionnalités selon leur valeur pour les utilisateurs et leur coût">Priorisation</span>
+            <span class="skill-tag highlight tooltip-wrap" data-tooltip="Cadre agile de développement par itérations courtes. Certifiée Professional Scrum Product Owner (PSPO I)">Scrum · PSPO I</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Pilotage des mises en production successives, en lien avec les équipes techniques">Pilotage des livraisons</span>
             <span class="skill-tag tooltip-wrap" data-tooltip="Vérification avec les utilisateurs que l'outil livré répond au besoin avant sa mise en production">Recette</span>
+            <span class="skill-tag tooltip-wrap" data-tooltip="Outil de gestion de backlog et de suivi des sprints, référence des équipes agiles">Jira</span>
           </div>
         </div>
         <div class="skill-group">
@@ -995,6 +1022,33 @@
           <div class="stack-item"><div class="stack-icon">🐳</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Outil pour lancer plusieurs composants d'une application en même temps, de façon isolée">Docker Compose</span></div><div class="stack-role">Conteneurisation</div></div></div>
           <div class="stack-item"><div class="stack-icon">🛡</div><div><div class="stack-name"><span class="tooltip-wrap" data-tooltip="Règlement général sur la protection des données personnelles">RGPD</span></div><div class="stack-role">Données conservées en interne · validation finale par l'utilisateur</div></div></div>
         </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-title">Extrait du backlog</div>
+      <p class="backlog-intro">Les besoins clés du produit, formulés en user stories avec leurs critères d'acceptation.</p>
+      <div class="us-list">
+          <div class="us-item">
+            <div class="us-head"><span class="us-id">US1</span><span class="us-title">Import et détection des doublons</span></div>
+            <p class="us-story"><strong>En tant que</strong> gestionnaire formation, <strong>je veux</strong> déposer plusieurs attestations PDF en une fois, <strong>afin de</strong> ne plus les traiter une par une depuis mes mails.</p>
+            <ul class="us-criteria"><li><em>Étant donné</em> un fichier déjà importé, <em>quand</em> je le dépose à nouveau, <em>alors</em> l'import est bloqué et le dossier existant m'est indiqué.</li><li><em>Quand</em> l'import se termine, <em>alors</em> chaque document passe au statut « Analyse ».</li></ul>
+          </div>
+          <div class="us-item">
+            <div class="us-head"><span class="us-id">US2</span><span class="us-title">Vérification des champs extraits</span></div>
+            <p class="us-story"><strong>En tant que</strong> gestionnaire formation, <strong>je veux</strong> voir le PDF et les champs extraits côte à côte, <strong>afin de</strong> corriger rapidement une erreur de lecture.</p>
+            <ul class="us-criteria"><li><em>Quand</em> un champ n'est pas reconnu avec certitude, <em>alors</em> il est surligné et le document passe « À vérifier ».</li><li><em>Quand</em> je sélectionne un texte sur le PDF, <em>alors</em> il remplit le champ actif.</li></ul>
+          </div>
+          <div class="us-item">
+            <div class="us-head"><span class="us-id">US3</span><span class="us-title">Validation finale par l'utilisateur</span></div>
+            <p class="us-story"><strong>En tant que</strong> gestionnaire formation, <strong>je veux</strong> valider moi-même chaque attestation avant archivage, <strong>afin de</strong> garder la responsabilité de la décision.</p>
+            <ul class="us-criteria"><li><em>Tant que</em> le document n'est pas « Validé », <em>alors</em> il ne peut pas être archivé.</li><li><em>Quand</em> je valide, <em>alors</em> la date et mon nom sont enregistrés.</li></ul>
+          </div>
+          <div class="us-item">
+            <div class="us-head"><span class="us-id">US4</span><span class="us-title">Suivi de la qualité de l'OCR</span></div>
+            <p class="us-story"><strong>En tant que</strong> responsable formation, <strong>je veux</strong> connaître le taux de reconnaissance par champ, <strong>afin de</strong> repérer les types de documents qui posent problème.</p>
+            <ul class="us-criteria"><li>Le tableau est filtrable par période et exportable en Excel.</li></ul>
+          </div>
       </div>
     </div>
 
