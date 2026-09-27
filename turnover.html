@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulateur de coût du turn-over — Outil RH</title>
+<title>Simulateur de coût du turn-over : Outil RH</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -380,7 +380,7 @@
 
     const pctSalaire = Math.round((r.total / v.salaire) * 100);
     document.getElementById('insight-text').innerHTML =
-      `Pour un poste à <strong>${fmt(v.salaire)}</strong>, chaque départ coûte environ <strong>${fmtK(r.total)}</strong> — soit <strong>${pctSalaire} % du salaire annuel</strong>. ` +
+      `Pour un poste à <strong>${fmt(v.salaire)}</strong>, chaque départ coûte environ <strong>${fmtK(r.total)}</strong>, soit <strong>${pctSalaire} % du salaire annuel</strong>. ` +
       `Avec ${v.departs} départ${v.departs > 1 ? 's' : ''} par an, l'impact total s'élève à <strong>${fmtK(r.totalAnnuel)}</strong>. ` +
       `Un programme de rétention réduisant le turn-over de 30 % permettrait d'économiser <strong>${fmtK(sansProg - avecProg)}</strong> par an.`;
 
