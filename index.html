@@ -1116,6 +1116,10 @@
     document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
     const el = document.getElementById('detail-' + id);
     if (el) { el.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    // Compter l'ouverture d'une fiche comme une page vue dans GoatCounter
+    if (el && window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: '/fiche/' + id, title: el.querySelector('h1').textContent, event: false });
+    }
   }
   // Les ancres de la page d'accueil doivent aussi fonctionner depuis une fiche projet
   document.querySelectorAll('a[href="#accueil"], a[href="#projets"], a[href="#apropos"], a[href="#contact"]').forEach(a => {
@@ -1127,5 +1131,7 @@
   // Lien direct vers une fiche depuis une démo : index.html#fiche-onboarding
   if (location.hash.startsWith('#fiche-')) showDetail(location.hash.slice(7));
 </script>
+<!-- Mesure d'audience GoatCounter (sans cookie) -->
+<script data-goatcounter="https://delphine-pires.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
