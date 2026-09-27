@@ -30,8 +30,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px
 .nav-linkedin{display:inline-flex;color:#0A66C2;transition:opacity .2s;}
 .nav-linkedin:hover{opacity:.75;}
 .nav-linkedin svg{width:20px;height:20px;}
-.nav-back{font-size:13px;color:var(--ink3);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s;}
-.nav-back:hover{color:var(--ink);}
+.back-btn{display:flex;width:fit-content;align-items:center;gap:6px;font-size:13px;color:var(--ink3);text-decoration:none;margin-bottom:24px;transition:color .2s;}
+.back-btn:hover{color:var(--ink);}
 .hero{padding:44px 40px 28px;max-width:1100px;margin:0 auto;}
 .hero-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--a600);background:var(--a50);border:1px solid rgba(239,159,39,.25);padding:5px 12px;border-radius:20px;margin-bottom:16px;}
 .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--a400);}
@@ -106,9 +106,9 @@ tr:hover td{background:var(--g50);}
     </a>
     <a href="index.html" class="nav-brand">PIRES Delphine</a>
   </div>
-  <a href="index.html" class="nav-back">← Retour au portfolio</a>
 </nav>
 <div class="hero">
+  <a href="index.html#projets" class="back-btn">← Retour aux projets</a>
   <div class="hero-tag">Outil RH interactif</div>
   <h1>Dashboard RH :<br><em>Pilotage</em> en temps réel</h1>
   <p class="hero-desc">Tableau de bord interactif : données <span id="annee-label"></span> jusqu'au <span id="today-label"></span>. Filtres par service et période, graphiques dynamiques.</p>

@@ -39,8 +39,8 @@
   .nav-linkedin { display: inline-flex; color: #0A66C2; transition: opacity .2s; }
   .nav-linkedin:hover { opacity: .75; }
   .nav-linkedin svg { width: 20px; height: 20px; }
-  .nav-back { font-size: 13px; color: var(--ink3); text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color .2s; }
-  .nav-back:hover { color: var(--ink); }
+  .back-btn{display:flex;width:fit-content;align-items:center;gap:6px;font-size:13px;color:var(--ink3);text-decoration:none;margin-bottom:24px;transition:color .2s;}
+  .back-btn:hover{color:var(--ink);}
 
   /* HERO */
   .hero { padding: 56px 40px 40px; max-width: 860px; margin: 0 auto; }
@@ -146,10 +146,10 @@
     </a>
     <a href="index.html" class="nav-brand">PIRES Delphine</a>
   </div>
-  <a href="index.html" class="nav-back">← Retour au portfolio</a>
 </nav>
 
 <div class="hero">
+  <a href="index.html#projets" class="back-btn">← Retour aux projets</a>
   <div class="hero-tag">Outil RH interactif</div>
   <h1>Simulateur de coût<br>du <em>turn-over</em></h1>
   <p class="hero-desc">Estimez le coût réel du départ d'un collaborateur : recrutement, perte de productivité, formation. Ajustez les paramètres et visualisez l'impact en temps réel.</p>
