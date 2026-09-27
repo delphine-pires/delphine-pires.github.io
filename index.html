@@ -640,7 +640,7 @@
 <!-- ═══════════════ DETAIL : ONBOARDING ═══════════════ -->
 <div id="detail-onboarding" class="detail-page">
   <div style="max-width:900px;margin:0 auto;">
-    <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
+    <button class="back-btn" onclick="goToSection('projets')">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
         <span class="badge badge-hr tooltip-wrap" data-tooltip="Ressources Humaines : gestion des collaborateurs, de la formation et des processus RH">RH</span>
@@ -728,7 +728,7 @@
 <!-- ═══════════════ DETAIL : CHATBOT ═══════════════ -->
 <div id="detail-chatbot" class="detail-page">
   <div style="max-width:900px;margin:0 auto;">
-    <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
+    <button class="back-btn" onclick="goToSection('projets')">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
         <span class="badge badge-ai tooltip-wrap" data-tooltip="Intelligence Artificielle : technologie capable d'analyser, comprendre et générer du texte ou des données">IA</span>
@@ -814,7 +814,7 @@
 <!-- ═══════════════ DETAIL : DASHBOARD ═══════════════ -->
 <div id="detail-dashboard" class="detail-page">
   <div style="max-width:900px;margin:0 auto;">
-    <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
+    <button class="back-btn" onclick="goToSection('projets')">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
         <span class="badge badge-data tooltip-wrap" data-tooltip="Collecte, structuration et analyse de données pour aider à la décision">Data</span>
@@ -961,7 +961,7 @@
 <!-- ═══════════════ DETAIL : POST-FORMATION ═══════════════ -->
 <div id="detail-postformation" class="detail-page">
   <div style="max-width:900px;margin:0 auto;">
-    <button class="back-btn" onclick="showHome()">← Retour aux projets</button>
+    <button class="back-btn" onclick="goToSection('projets')">← Retour aux projets</button>
     <div class="detail-header">
       <div class="card-badges">
         <span class="badge badge-tech tooltip-wrap" data-tooltip="Conception et construction d'un outil ou d'une application de A à Z">Développement produit</span>
@@ -1104,10 +1104,10 @@
 </div>
 
 <script>
-  function showHome() {
+  function goToSection(id) {
     document.getElementById('home-view').style.display = 'block';
     document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   }
   function showDetail(id) {
     document.getElementById('home-view').style.display = 'none';
@@ -1119,9 +1119,7 @@
   document.querySelectorAll('a[href="#accueil"], a[href="#projets"], a[href="#apropos"], a[href="#contact"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
-      document.getElementById('home-view').style.display = 'block';
-      document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
-      document.getElementById(a.getAttribute('href').slice(1)).scrollIntoView({ behavior: 'smooth' });
+      goToSection(a.getAttribute('href').slice(1));
     });
   });
 </script>
